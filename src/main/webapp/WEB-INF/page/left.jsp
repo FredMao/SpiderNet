@@ -32,6 +32,9 @@
                         </li>      
                         <li><a class="ajax-link" href="<%=path %>/service/employee/scoreImport.html"><i class="glyphicon glyphicon-download-alt"></i><span>&nbsp;&nbsp;&nbsp;&nbsp;Score Import</span></a>
                         </li>
+                        <li><a class="ajax-link" href="<%=path %>/service/knowledge/knowledgePoint.html"><i class="glyphicon glyphicon-download-alt"></i><span>&nbsp;&nbsp;&nbsp;&nbsp;Knowledge Point</span></a>
+                        </li>
+                        
                         <li class="accordion">
                             <a href="#"><i class="glyphicon glyphicon-th"></i><span>&nbsp;&nbsp;&nbsp;&nbsp;Capacity Maintenance</span></a>
                             <ul class="nav nav-pills nav-stacked">

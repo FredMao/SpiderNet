@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spidernet.dashboard.dao.KnowledgePointMapper">
+	<resultMap id="knowledgePointMap" type="com.spidernet.dashboard.entity.KnowledgePoint">
+		<id property="knowledgePointId" column="KNOWLEDGE_POINT_ID" javaType="String" />
+		<result property="pointTitle" column="POINT_TITLE" javaType="String" />
+		<result property="pid" column="PID" javaType="String" />
+		<result property="leaf" column="LEAF" javaType="Int" />
+		<result property="icon" column="ICON" javaType="String" />
+		<result property="createUser" column="CREATE_USER" javaType="String" />
+		<result property="createDate" column="CREATE_DATE" javaType="java.sql.Date" />
+		<result property="updateDate" column="UPDATE_DATE" javaType="java.sql.Date" />
+		<result property="description" column="DESCRIPTION" javaType="String" />
+		<result property="status" column="STATUS" javaType="Int" />
+		<result property="name" column="NAME" javaType="String" />
+		<result property="sort" column="SORT" javaType="Int" />
+	</resultMap>
+	
+	<select id="queryKnowledgePoints" parameterType="com.spidernet.dashboard.entity.KnowledgePointCondition" resultMap="knowledgePointMap">
+		SELECT
+			t_knowledge_point.KNOWLEDGE_POINT_ID,
+			t_knowledge_point.POINT_TITLE,
+			t_knowledge_point.PID,
+			t_knowledge_point.LEAF,
+			t_knowledge_point.ICON,
+			t_knowledge_point.CREATE_USER,
+			t_knowledge_point.CREATE_DATE,
+			t_knowledge_point.UPDATE_DATE,
+			t_knowledge_point.DESCRIPTION,
+			t_knowledge_point.STATUS,
+			e.NAME,
+			t_knowledge_point.SORT
+		FROM
+			t_knowledge_point,
+			t_employee as e
+		WHERE
+			e.EMPLOYEE_ID = t_knowledge_point.CREATE_USER 
+			AND 
+			 t_knowledge_point.PID =  #{pid}
+			
+			<if test="pointTitle != null and pointTitle != ''">
+				AND t_knowledge_point.POINT_TITLE like CONCAT('%',#{pointTitle},'%')
+			</if>
+			
+			<if test="status != -1">
+				AND t_knowledge_point.STATUS = #{status}
+			</if>
+			
+			ORDER BY t_knowledge_point.SORT 
+			
+			<if test="pid == 0">
+				LIMIT #{currentPage},10;	
+			</if>
+		
+	</select>
+	
+	<select id="countPage" parameterType="com.spidernet.dashboard.entity.KnowledgePointCondition"
+		resultType="int">
+		SELECT
+			count(1)
+		FROM
+			t_knowledge_point
+		WHERE
+			t_knowledge_point.PID =  #{pid}
+			
+			<if test="pointTitle != null and pointTitle != ''">
+				AND t_knowledge_point.POINT_TITLE like CONCAT('%',#{pointTitle},'%')
+			</if>
+			
+			<if test="status != -1">
+				AND t_knowledge_point.STATUS = #{status}
+			</if>
+	</select>
+	
+	<select id="queryKnowledgePointByPid" parameterType="String" resultMap="knowledgePointMap">
+		SELECT
+			t_knowledge_point.KNOWLEDGE_POINT_ID,
+			t_knowledge_point.POINT_TITLE,
+			t_knowledge_point.PID,
+			t_knowledge_point.LEAF,
+			t_knowledge_point.ICON,
+			t_knowledge_point.CREATE_USER,
+			t_knowledge_point.CREATE_DATE,
+			t_knowledge_point.UPDATE_DATE,
+			t_knowledge_point.DESCRIPTION,
+			t_knowledge_point.STATUS,
+			t_knowledge_point.SORT
+		FROM
+			t_knowledge_point
+		WHERE
+			t_knowledge_point.PID =  #{pid} 
+			ORDER BY t_knowledge_point.SORT
+	</select>
+	
+	<select id="queryKnowledgePointById" parameterType="String" resultType="com.spidernet.dashboard.entity.KnowledgePoint">
+		SELECT
+			t_knowledge_point.KNOWLEDGE_POINT_ID as knowledgePointId,
+			t_knowledge_point.POINT_TITLE as pointTitle,
+			t_knowledge_point.PID as pid,
+			t_knowledge_point.LEAF,
+			t_knowledge_point.ICON,
+			t_knowledge_point.CREATE_USER as createUser,
+			t_knowledge_point.CREATE_DATE as createDate,
+			t_knowledge_point.UPDATE_DATE as updateDate,
+			t_knowledge_point.DESCRIPTION as description,
+			t_knowledge_point.STATUS as status,
+			t_knowledge_point.SORT as sort
+		FROM
+			t_knowledge_point
+		WHERE
+			t_knowledge_point.KNOWLEDGE_POINT_ID =  #{knowledgePointId}
+	</select>
+
+	<insert id="addKnowledgePoint" parameterType="com.spidernet.dashboard.entity.KnowledgePoint">
+	    insert into t_knowledge_point (KNOWLEDGE_POINT_ID,POINT_TITLE,PID,LEAF,ICON,CREATE_USER,CREATE_DATE,UPDATE_DATE,DESCRIPTION, STATUS, SORT)
+	    values
+	    (#{knowledgePointId},#{pointTitle},#{pid},#{leaf},#{icon},#{createUser},#{createDate},#{updateDate},#{description},#{status}, #{sort})
+	</insert>
+	
+	<update id="updateKnowledgePoint" parameterType="com.spidernet.dashboard.entity.KnowledgePoint">
+		update  t_knowledge_point 
+		set 
+			POINT_TITLE=#{pointTitle},
+			PID=#{pid},
+			LEAF=#{leaf}, 
+			ICON=#{icon},
+			CREATE_USER=#{createUser},
+			CREATE_DATE=#{createDate},
+			UPDATE_DATE=#{updateDate},
+			DESCRIPTION=#{description},
+			STATUS=#{status}, 
+			SORT=#{sort} 
+		where 
+			KNOWLEDGE_POINT_ID=#{knowledgePointId};
+	</update>
+	
+</mapper>

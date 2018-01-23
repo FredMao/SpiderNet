@@ -106,6 +106,10 @@
                     <p class="center col-md-5 p-style">
                         <button type="submit" id="submitBtn" class="btn btn-primary btn-primary-new">Login</button>
                     </p>
+			<!--test account
+			<p style="text-align:left;padding:0px;margin:0px"><label >演示账号：</label></p>
+			<p style="text-align:left;padding:0px;margin:0px"><label >交付部经理: 用户名: 123456 密码：admin</label></p>
+			<p style="text-align:left;padding:0px;margin:0px"><label >员工: 用户名:333333 密码：123456</label></p>-->
                 </fieldset>
             </form>
         </div>
