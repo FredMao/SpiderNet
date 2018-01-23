@@ -55,7 +55,7 @@ function loadKnowlegedPointList(pageState){
 				}
 				
 				var td5 = $("<td>"
-						+ result.data[i].name
+						+ result.data[i].sort
 						+ "</td>");
 				var status = 'Active';
 				var classname = 'label-success label label-default';
@@ -72,6 +72,7 @@ function loadKnowlegedPointList(pageState){
 				td1.appendTo(tr);
 				td2.appendTo(tr);
 				td3.appendTo(tr);
+				td5.appendTo(tr);
 				td6.appendTo(tr);
 				td7.appendTo(tr);
 			}
@@ -175,8 +176,6 @@ function queryItemDetailByPid(id){
 				td1.appendTo(tr);
 				td2.appendTo(tr);
 				td3.appendTo(tr);
-//				td4.appendTo(tr);
-//				td5.appendTo(tr);
 				td6.appendTo(tr);
 				td7.appendTo(tr);
 				}
@@ -234,6 +233,7 @@ function loadFormData(id){
 			$("#pointTitle").val(result.pointTitle);
 			$("#description").val(result.description);
 			$("input:radio[value='"+result.status+"']").attr('checked', true);
+			$("#Sort").val(result.sort);
 		}
 	})
 }
@@ -245,11 +245,12 @@ function saveknowledgePoint(){
 	var description = $('#description').val();
 	var pid = $('#pid').val();
 	var status = $('input[name="status"]:checked').val();
+	var sort = $("#Sort").val();
 	$.ajax({
 		url:path+'/service/knowledge/addOrUpdateKnowledgePoint',
 		dataType:"json",
 		async:true,
-		data:{"knowledgePointId":knowledgePointId,"pointTitle":pointTitle,"description":description,"description":description,"pid":pid,"status":status},
+		data:{"knowledgePointId":knowledgePointId,"pointTitle":pointTitle,"description":description,"description":description,"pid":pid,"status":status,"sort":sort},
 		cache:false,
 		type:"post",
 		success:function(resultFlag){

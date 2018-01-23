@@ -21,11 +21,20 @@ public class KnowledgePoint  implements Serializable {
 	private String description;
 	private int status;
 	private String name;
+	private int sort;
 	
 	public KnowledgePoint(){
 		
 	}
 	
+	public int getSort() {
+		return sort;
+	}
+
+	public void setSort(int sort) {
+		this.sort = sort;
+	}
+
 	public String getName() {
 		return name;
 	}

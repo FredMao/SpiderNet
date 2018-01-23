@@ -14,6 +14,7 @@
 		<result property="description" column="DESCRIPTION" javaType="String" />
 		<result property="status" column="STATUS" javaType="Int" />
 		<result property="name" column="NAME" javaType="String" />
+		<result property="sort" column="SORT" javaType="Int" />
 	</resultMap>
 	
 	<select id="queryKnowledgePoints" parameterType="com.spidernet.dashboard.entity.KnowledgePointCondition" resultMap="knowledgePointMap">
@@ -28,7 +29,8 @@
 			t_knowledge_point.UPDATE_DATE,
 			t_knowledge_point.DESCRIPTION,
 			t_knowledge_point.STATUS,
-			e.NAME
+			e.NAME,
+			t_knowledge_point.SORT
 		FROM
 			t_knowledge_point,
 			t_employee as e
@@ -44,6 +46,9 @@
 			<if test="status != -1">
 				AND t_knowledge_point.STATUS = #{status}
 			</if>
+			
+			ORDER BY t_knowledge_point.SORT 
+			
 			<if test="pid == 0">
 				LIMIT #{currentPage},10;	
 			</if>
@@ -79,11 +84,13 @@
 			t_knowledge_point.CREATE_DATE,
 			t_knowledge_point.UPDATE_DATE,
 			t_knowledge_point.DESCRIPTION,
-			t_knowledge_point.STATUS
+			t_knowledge_point.STATUS,
+			t_knowledge_point.SORT
 		FROM
 			t_knowledge_point
 		WHERE
-			t_knowledge_point.PID =  #{pid}
+			t_knowledge_point.PID =  #{pid} 
+			ORDER BY t_knowledge_point.SORT
 	</select>
 	
 	<select id="queryKnowledgePointById" parameterType="String" resultType="com.spidernet.dashboard.entity.KnowledgePoint">
@@ -97,7 +104,8 @@
 			t_knowledge_point.CREATE_DATE as createDate,
 			t_knowledge_point.UPDATE_DATE as updateDate,
 			t_knowledge_point.DESCRIPTION as description,
-			t_knowledge_point.STATUS as status
+			t_knowledge_point.STATUS as status,
+			t_knowledge_point.SORT as sort
 		FROM
 			t_knowledge_point
 		WHERE
@@ -105,16 +113,26 @@
 	</select>
 
 	<insert id="addKnowledgePoint" parameterType="com.spidernet.dashboard.entity.KnowledgePoint">
-	    insert into t_knowledge_point (KNOWLEDGE_POINT_ID,POINT_TITLE,PID,LEAF,ICON,CREATE_USER,CREATE_DATE,UPDATE_DATE,DESCRIPTION, STATUS)
+	    insert into t_knowledge_point (KNOWLEDGE_POINT_ID,POINT_TITLE,PID,LEAF,ICON,CREATE_USER,CREATE_DATE,UPDATE_DATE,DESCRIPTION, STATUS, SORT)
 	    values
-	    (#{knowledgePointId},#{pointTitle},#{pid},#{leaf},#{icon},#{createUser},#{createDate},#{updateDate},#{description},#{status})
+	    (#{knowledgePointId},#{pointTitle},#{pid},#{leaf},#{icon},#{createUser},#{createDate},#{updateDate},#{description},#{status}, #{sort})
 	</insert>
 	
 	<update id="updateKnowledgePoint" parameterType="com.spidernet.dashboard.entity.KnowledgePoint">
-		update t_knowledge_point set 
-		POINT_TITLE=#{pointTitle},PID=#{pid},LEAF=#{leaf}, ICON=#{icon},CREATE_USER=#{createUser},
-		CREATE_DATE=#{createDate},UPDATE_DATE=#{updateDate},
-		DESCRIPTION=#{description},STATUS=#{status} where KNOWLEDGE_POINT_ID=#{knowledgePointId};
+		update  t_knowledge_point 
+		set 
+			POINT_TITLE=#{pointTitle},
+			PID=#{pid},
+			LEAF=#{leaf}, 
+			ICON=#{icon},
+			CREATE_USER=#{createUser},
+			CREATE_DATE=#{createDate},
+			UPDATE_DATE=#{updateDate},
+			DESCRIPTION=#{description},
+			STATUS=#{status}, 
+			SORT=#{sort} 
+		where 
+			KNOWLEDGE_POINT_ID=#{knowledgePointId};
 	</update>
 	
 </mapper>

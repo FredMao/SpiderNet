@@ -1,6 +1,5 @@
 package com.spidernet.dashboard.controller;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -15,15 +14,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.spidernet.dashboard.entity.EmpPageCondition;
 import com.spidernet.dashboard.entity.Employee;
-import com.spidernet.dashboard.entity.EmployeeInfo;
 import com.spidernet.dashboard.entity.KnowledgePoint;
 import com.spidernet.dashboard.entity.KnowledgePointCondition;
 import com.spidernet.dashboard.service.KnowledgePointService;
 import com.spidernet.util.Utils;
-
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("/knowledge")
@@ -138,12 +133,14 @@ public class KnowledgePointController {
 	        String status = request.getParameter("status");
 	        HttpSession session = request.getSession();
 	        Employee employee = (Employee) session.getAttribute("employee");
-	      
+	        int sort = request.getParameter("sort")==null?0:Integer.parseInt(request.getParameter("sort"));
+	        
 	        knowledgePoint.setKnowledgePointId(knowledgePointId);
 	        knowledgePoint.setPointTitle(pointTitle);
 	        knowledgePoint.setPid(pid);
 	        knowledgePoint.setIcon(icon);
 	        knowledgePoint.setCreateUser(employee.getEmployeeId());
+	        knowledgePoint.setSort(sort);
 	        knowledgePoint.setDescription(description);
 	        
 	        if (null != status && !"".equals(status)){

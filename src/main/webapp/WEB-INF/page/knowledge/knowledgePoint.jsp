@@ -108,16 +108,15 @@
 							<div class="col-sm-3">
 								<input type="text" class="form-control" name="s_pointTitle" id="s_pointTitle" />
 							</div>
-						</div>		
-						<div class="group">
+						
 											<label class="col-lg-2 control-label">Status</label>
 											<div class="col-lg-3">
 												<select href="#" class="form-control " name="s_status"
 													data-bv-notempty data-bv-notempty-message="Select Status"
 													id="s_status" data-bv-group=".group">
-													<option value="-1">All</option>
 													<option value="0">Active</option>
 													<option value="1">Inactive</option>
+													<option value="-1">All</option>
 												</select>
 											</div>
 										</div>
@@ -141,8 +140,7 @@
                         <tr>
                             <th>Title</th>
                             <th>Description</th>
-<!--                             <th>Update Date</th> -->
-<!--                             <th>Update User</th> -->
+							<th>Sort</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -260,22 +258,31 @@
 									<input type="text" class="form-control" name="description" id="description"/>
 								</div>
 							</div>
+							<div class="group">
+								<label class="col-sm-2 control-label">Sort</label>
+								<div class="col-sm-4">
+									<input type="text" class="form-control" name="Sort" value="0" id="Sort"/>
+								</div>
+							</div>
+							
+							<div class="group">
+							<label class="col-sm-2 control-label">Status</label>
+								<label class="radio-inline"> 
+								<input type="radio"
+									name="status" id="status" value="0"
+									 checked="checked">
+									Active
+								</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+								<label class="radio-inline"> <input type="radio"
+									name="status" id="status" value="1">
+									Inactive
+								</label>
+						</div>
+							
 						</div>
 						
 						</br>
 						
-						<div class="center">
-						<label class="radio-inline"> <input type="radio"
-							name="status" id="status" value="0"
-							 checked="checked">
-							Active
-						</label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<label class="radio-inline"> <input type="radio"
-							name="status" id="status" value="1">
-							Inactive
-						</label>
-						</div>
-
 						</br></br></br>
 						<div class="center">
 							<a class="btn btn-success" href="#" onClick="saveknowledgePoint()"> 
