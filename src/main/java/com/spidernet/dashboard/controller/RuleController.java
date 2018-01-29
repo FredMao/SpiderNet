@@ -42,6 +42,15 @@ public class RuleController
     {
         return "employee/rule";
     }
+    
+    @RequestMapping("/finalAll")
+    @ResponseBody
+    public Object finalAll(final HttpServletRequest request,
+            final HttpServletResponse response)
+    {
+    	  List<Rule> ruleInfoList = ruleService.queryRuleInfoAll();
+    	  return ruleInfoList;
+    }
    
     @RequestMapping("/ruleInfoList")
     @ResponseBody

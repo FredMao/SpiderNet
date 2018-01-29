@@ -8,4 +8,6 @@ public interface BuMapper
 {
     Bu findBuName(String buId);
     List<Bu> queryBu();
+    List<Bu> queryBus(Bu bu);
+    int addBu(Bu bu);
 }

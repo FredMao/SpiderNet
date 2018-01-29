@@ -15,6 +15,8 @@ public class Employee implements Serializable
     private String eName;
     private String password;
     private String wechatOpenId;
+    private String skill;
+    private Bu bu;
     public String getEmployeeId()
     {
         return employeeId;
@@ -103,7 +105,21 @@ public class Employee implements Serializable
     {
         this.wechatOpenId = wechatOpenId;
     }
-    public Employee()
+    
+    public String getSkill() {
+		return skill;
+	}
+	public void setSkill(String skill) {
+		this.skill = skill;
+	}
+	
+	public Bu getBu() {
+		return bu;
+	}
+	public void setBu(Bu bu) {
+		this.bu = bu;
+	}
+	public Employee()
     {
         super();
         // TODO Auto-generated constructor stub

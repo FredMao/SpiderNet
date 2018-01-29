@@ -15,7 +15,80 @@ $(function(){
 	$("#examBox").hide();
 	
 	$("#sub_export").attr("disabled","disabled");
+	
+	multipleSelect();
+	
+	$("#rule_confirm_btn").click(function(){
+		var rule = $("#ruleList").val();
+		var er = $("#er_conf").val();
+		if (rule == '' || rule == null){
+			$("#failureAlert").html('Please select rule.').show();
+		}
+		
+		$.ajax({
+			url:path+'/service/employeeInfo/configRule',
+			dataType:"json",
+			data:{"er":er,"rule":rule.toString()},
+			async:true,
+			cache:false,
+			type:"post",
+			success:function(resultFlag){
+				
+				if(resultFlag){
+					$("#successAlert").html('Operator Success').show();
+					setTimeout(function () {
+						$("#successAlert").hide();
+						$('#ruleConfigModel').modal('hide');
+						$('#rule_confirm_btn').attr("disabled", false);
+						loadEmpList();
+				    }, 1000);
+				}else{
+					$("#failureAlert").html('Operator Fail').show();
+				}
+				
+			}
+		})
+		
+	});
 });
+
+
+function multipleSelect(){
+	$.ajax({
+		url:path+'/service/rule/finalAll',
+		dataType:"json",
+		async:true,
+		cache:false,
+		type:"post",
+		success:function(listB){
+			buMultiselect = listB;
+			for(var i = 0;i<listB.length;i++){
+				$("#ruleList").append("<option value='"+listB[i].id+"'>"+listB[i].name+"</option>");
+			}
+			
+			$('.selectpicker').selectpicker({
+		        'selectedText': 'cat'
+		    });
+		}
+	})
+}
+
+function setRulesByEr(e){
+	$("#ruleList").selectpicker('val', ''.split(','));
+	$.ajax({
+		url:path+'/service/employeeInfo/getRule',
+		data:{"er":e},
+		dataType:"json",
+		async:true,
+		cache:false,
+		type:"post",
+		success:function(result){
+			var data = result.rule;
+			//var dd = ruleid;
+			$("#ruleList").selectpicker('val', data.split(','));
+		}
+	})
+}
 
 
 function checkPrivilege(){
@@ -209,6 +282,8 @@ function loadEmpList(pageState){
 						+ "</td>");
 				var td7 = $("<td><a class='btn btn-info' href='javascript:void(0);'  onclick=getEr('"+result.data[i].er+"')> <i class='glyphicon glyphicon-edit icon-white'></i> 编辑</a></td>");
 				//var td7 = $("<td><a href='javascript:void(0);'  onclick=getEr('"+result.data[i].er+"')>Edit</a></td>");
+				
+				var td8 = $("<td> <a class='btn btn-info' href='javascript:void(0);'onclick=configRule('"+result.data[i].er+"') ><i class='glyphicon glyphicon-info-sign'></i> 权限配置</a></td>");
 				td1.appendTo(tr);
 				td2.appendTo(tr);
 				td3.appendTo(tr);
@@ -216,6 +291,7 @@ function loadEmpList(pageState){
 				td5.appendTo(tr);
 				td6.appendTo(tr);
 				td7.appendTo(tr);
+				td8.appendTo(tr);
 			}
 			$("#EmployeeList").append("</tbdoy>");
 			//alert(window.location.href);
@@ -244,6 +320,12 @@ function getEr(er){
 	$("#editForm").attr("action",path+"/service/employee/update.html");
 	$("#erNum").val(er);
 	$("#editForm").submit();
+}
+
+function configRule(er){
+	setRulesByEr(er);
+	$("#er_conf").val(er);
+	$("#ruleConfigModel").modal('show');
 }
 
 function loadProject(buId,projectId){

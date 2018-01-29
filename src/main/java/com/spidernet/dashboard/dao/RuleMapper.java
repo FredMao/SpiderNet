@@ -21,5 +21,6 @@ public interface RuleMapper
     int editRule(Rule rule);
     int deleteRule(Rule rule);
     int checkNameExists(String name);
+    List<Rule> queryRuleInfoAll();
 }
 

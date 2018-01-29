@@ -38,4 +38,16 @@ public class BuServiceImpl implements BuService
         return listB;
     }
 
+	@Override
+	public List<Bu> queryBus(Bu bu) {
+		
+		return bumapper.queryBus(bu);
+	}
+
+	@Override
+	public int addBu(Bu bu) {
+		
+		return bumapper.addBu(bu);
+	}
+
 }

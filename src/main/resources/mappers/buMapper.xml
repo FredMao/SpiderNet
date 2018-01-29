@@ -10,6 +10,7 @@
 		<result property="sort" column="SORT" javaType="String"/>
 		<result property="contactNumber" column="CONTACT_NUMBER" javaType="String"/>
 		<result property="mangerName" column="MANAGER_NAME" javaType="String"/>
+		<result property="orgName" column="ORG_NAME" javaType="String"/>
 	</resultMap>
 	<select id="findBuName"  parameterType="String" resultType="com.spidernet.dashboard.entity.Bu">
 		select BU_ID as buId, NAME as buName, DESCRIPTION as description, SORT as sort,CONTACT_NUMBER as contactNumber,MANAGER_NAME as mangerName FROM t_bu WHERE BU_ID = #{buId}; 
@@ -18,5 +19,17 @@
 	<select id="queryBu" resultMap="buMap">
 		select * FROM t_bu order by SORT asc; 
 	</select>
+	
+	<select id="queryBus"  parameterType="com.spidernet.dashboard.entity.Bu"  resultMap="buMap">
+		select * FROM t_bu WHERE NAME=#{buName}; 
+	</select>
+	
+	<insert id="addBu"  parameterType="com.spidernet.dashboard.entity.Bu">
+		insert into t_bu (BU_ID,NAME,DESCRIPTION,SORT, CONTACT_NUMBER,MANAGER_NAME,ORG_NAME) 
+		values
+		(#{buId}, #{buName}, #{description}, #{sort}, #{contactNumber}, #{mangerName}, #{orgName});
+	</insert>
+	
+
 
 </mapper>

@@ -88,15 +88,6 @@
             <div class="box-inner">
                 <div class="box-header well" data-original-title="">
                     <h2>Knowledge Point</h2>
-
-                    <div class="box-icon">
-                        <a href="#" class="btn btn-setting btn-round btn-default"><i
-                                class="glyphicon glyphicon-cog"></i></a>
-                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                                class="glyphicon glyphicon-chevron-up"></i></a>
-                        <a href="#" class="btn btn-close btn-round btn-default"><i
-                                class="glyphicon glyphicon-remove"></i></a>
-                    </div>
                 </div>
                 <div class="box-content">
                 
@@ -104,38 +95,39 @@
                 <form id="scoreForm" method="post" class="form-horizontal"
 									style="width: 100%" enctype ="multipart/form-data">
 				<div class="group">
-							<label class="col-sm-2 control-label" style="width:80px;">Title</label>
-							<div class="col-sm-3">
+							<label class="col-sm-2 control-label" style="width:80px;margin-top:5px;">Title</label>
+							<div class="col-sm-3" style="margin-top:5px;">
 								<input type="text" class="form-control" name="s_pointTitle" id="s_pointTitle" />
 							</div>
 						
-											<label class="col-lg-2 control-label">Status</label>
-											<div class="col-lg-3">
-												<select href="#" class="form-control " name="s_status"
-													data-bv-notempty data-bv-notempty-message="Select Status"
-													id="s_status" data-bv-group=".group">
-													<option value="0">Active</option>
-													<option value="1">Inactive</option>
-													<option value="-1">All</option>
-												</select>
-											</div>
-										</div>
-										
+							<label class="col-lg-2 control-label" style="margin-top:5px;">Status</label>
+							<div class="col-lg-3" style="margin-top:5px;">
+								<select href="#" class="form-control " name="s_status"
+									data-bv-notempty data-bv-notempty-message="Select Status"
+									id="s_status" data-bv-group=".group">
+									<option value="0">Active</option>
+									<option value="1">Inactive</option>
+									<option value="-1">All</option>
+								</select>
+							</div>
+						</div>
+						<div class="group">				
 						 <input type="button" value="&nbsp;Search&nbsp;"
 										name="subscribe" id="sub_search" href="#"
 										class="button btn btn-primary" data-dismiss="modal"
 										onclick="loadKnowlegedPointList('')"
-										style="background-color: #D5D5D5; border: 0 none; border-radius: 4px; color: #FFFFFF; cursor: pointer; display: inline-block; font-size: 15px; font-weight: bold; height: 32px; line-height: 32px; margin: 0 5px 10px 0; padding: 0; text-align: center; text-decoration: none; vertical-align: top; white-space: nowrap; width:80px; margin:auto ;">
+										style="background-color: #D5D5D5; border: 0 none; border-radius: 4px; color: #FFFFFF; cursor: pointer; display: inline-block; font-size: 15px; font-weight: bold; height: 32px; line-height: 32px; margin: 0 5px 10px 0; padding: 0; text-align: center; text-decoration: none; vertical-align: top; white-space: nowrap; width:80px; margin:auto ;margin-top:5px;">
 				
 				 <input type="button" value="&nbsp;Add&nbsp;"
 					name="subscribe" id="sub_add" href="#"
 					class="button btn btn-primary" data-dismiss="modal"
 					onclick="addKnowledgePoint(0, this)"
-					style="background-color: #D5D5D5; border: 0 none; border-radius: 4px; color: #FFFFFF; cursor: pointer; display: inline-block; font-size: 15px; font-weight: bold; height: 32px; line-height: 32px; margin: 0 5px 10px 0; padding: 0; text-align: center; text-decoration: none; vertical-align: top; white-space: nowrap; width: 80px; margin:auto ;">
+					style="background-color: #D5D5D5; border: 0 none; border-radius: 4px; color: #FFFFFF; cursor: pointer; display: inline-block; font-size: 15px; font-weight: bold; height: 32px; line-height: 32px; margin: 0 5px 10px 0; padding: 0; text-align: center; text-decoration: none; vertical-align: top; white-space: nowrap; width: 80px; margin:auto ;margin-top:5px;">
+					</div>
 				</form>
 				</div>
                 <div>
-                    <table id="knowledgePointList" class="table table-bordered" data-show-refresh="true">
+                    <table id="knowledgePointList" class="table table-bordered">
                         <thead>
                         <tr>
                             <th>Title</th>
@@ -169,15 +161,6 @@
             <div class="box-inner">
                 <div class="box-header well" data-original-title="">
                     <h2><span id="detail_title"></span>Detail</h2>
-
-                    <div class="box-icon">
-                        <a href="#" class="btn btn-setting btn-round btn-default"><i
-                                class="glyphicon glyphicon-cog"></i></a>
-                        <a href="#" class="btn btn-minimize btn-round btn-default"><i
-                                class="glyphicon glyphicon-chevron-up"></i></a>
-                        <a href="#" class="btn btn-close btn-round btn-default"><i
-                                class="glyphicon glyphicon-remove"></i></a>
-                    </div>
                 </div>
                 <div class="box-content">
                 
@@ -223,7 +206,7 @@
 				<div class="modal-content">
 					<div class="box-header well" data-original-title="">
 						<h2>
-							<i class="glyphicon glyphicon-user"></i> Knowledge Point Information
+							<i class="glyphicon glyphicon-tasks"></i> Knowledge Point Information
 						</h2>
 
 						<div class="box-icon">
@@ -258,9 +241,9 @@
 									<input type="text" class="form-control" name="description" id="description"/>
 								</div>
 							</div>
-							<div class="group">
+							<div class="group" style="padding-top:5px;">
 								<label class="col-sm-2 control-label">Sort</label>
-								<div class="col-sm-4">
+								<div class="col-sm-4" style="margin-top:5px;">
 									<input type="text" class="form-control" name="Sort" value="0" id="Sort"/>
 								</div>
 							</div>
@@ -285,7 +268,7 @@
 						
 						</br></br></br>
 						<div class="center">
-							<a class="btn btn-success" href="#" onClick="saveknowledgePoint()"> 
+							<a id="confirm_btn" class="btn btn-success" href="#" onClick="saveknowledgePoint()"> 
 							<i class="glyphicon glyphicon-ok icon-white" ></i> Confirm</a>
 							<!-- <input type="submit" value="确&nbsp;&nbsp;定" name="subscribe" id="sub_bt" 
 							href="#" class="button btn btn-primary" data-dismiss="modal">  -->

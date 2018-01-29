@@ -109,4 +109,10 @@ public class RuleServiceImpl implements RuleService
         }
     }
 
+	@Override
+	public List<Rule> queryRuleInfoAll() {
+		// TODO Auto-generated method stub
+		return ruleMapper.queryRuleInfoAll();
+	}
+
 }

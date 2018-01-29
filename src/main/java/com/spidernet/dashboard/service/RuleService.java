@@ -21,4 +21,5 @@ public interface RuleService
     Boolean editRule(Rule rule);
     Boolean deleteRule(Rule rule);
     Boolean checkNameExists(String name);
+    List<Rule> queryRuleInfoAll();
 }
