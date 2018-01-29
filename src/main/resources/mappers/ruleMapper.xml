@@ -58,5 +58,8 @@
 	<select id="checkNameExists" parameterType="String" resultType="int">
 	    select count(0) from t_rule where name = #{name}
 	</select>
-
+	
+   <select id="queryRuleInfoAll" resultMap="ruleMap">
+     select * from t_rule ORDER BY sort DESC;
+   </select>
 </mapper>

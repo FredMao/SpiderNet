@@ -11,6 +11,7 @@ import com.spidernet.dashboard.entity.EmployeeInfo;
 import com.spidernet.dashboard.entity.PageCondition;
 import com.spidernet.dashboard.entity.TrainingInfo;
 import com.spidernet.dashboard.service.EmployeeInfoService;
+import com.spidernet.util.Utils;
 
 /**
  * 
@@ -62,6 +63,27 @@ public class EmployeeInfoServiceImpl implements EmployeeInfoService
 
 		int result= employeeInfoMapper.deleteEmpTrainingInfo(ername, trname);
         return result;
+	}
+
+	@Override
+	public int configRule(String er, String ruleId) {
+		String ru = employeeInfoMapper.queryRuleByEr(er);
+		int result = 0;
+		if (null != ru && !"".equals(ru)){
+			//update
+			result = employeeInfoMapper.updateRule(ruleId, er);
+		}else{
+			//insert
+			String id = Utils.getUUID();
+			result = employeeInfoMapper.configRule(id,  er, ruleId);
+		}
+		return result;
+	}
+
+	@Override
+	public String queryRuleByEr(String er) {
+		// TODO Auto-generated method stub
+		return employeeInfoMapper.queryRuleByEr(er);
 	}
 
 }

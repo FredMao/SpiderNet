@@ -221,6 +221,7 @@
 												<th>Delivery Department</th>
 												<th>Project</th>
 												<th>Operation</th>
+												<th>Rule Conf</th>
 											</tr>
 										</thead>
 									</table>
@@ -256,6 +257,64 @@
 		<c:import url="/service/manage/footer" />
 
 	</div>
+	
+	
+		<div class="modal fade" id="ruleConfigModel" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="box-header well" data-original-title="">
+						<h2>
+							<i class="glyphicon glyphicon-tasks"></i> Rule Configuation
+						</h2>
+
+						<div class="box-icon">
+							<a href="#" class="btn btn-round btn-default  btn-minimize "><i
+								class="glyphicon glyphicon-chevron-up"></i></a> <a
+								class="btn btn-round btn-default" href="#" data-dismiss="modal">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</div>
+					</div>
+					
+					<div id="knowledgeBox" class="box-content">
+
+						<div id="successAlert" class="alert alert-success" style="display: none;"></div>
+						<div id="failureAlert" class="alert alert-warning" style="display: none;"></div>
+						
+						<form id="knowledgeBoxForm" method="post" class="form-horizontal">
+						
+						</br></br>
+					<div class="form-group">
+							<div class="group">
+								<label class="col-lg-2 control-label">Rule List</label>
+								<div class="col-lg-4">
+								<select
+									id="ruleList" class="selectpicker" multiple
+									data-live-search="true">
+								</select>
+								<input type="hidden" id="er_conf"/>
+								</div>
+							</div>
+						</div>					
+						</br>
+						
+						</br></br></br>
+						<div class="center">
+							<a id="rule_confirm_btn" class="btn btn-success" href="#"> 
+							<i class="glyphicon glyphicon-ok icon-white" ></i> Confirm</a>
+							<!-- <input type="submit" value="确&nbsp;&nbsp;定" name="subscribe" id="sub_bt" 
+							href="#" class="button btn btn-primary" data-dismiss="modal">  -->
+							<a class="btn btn-info" href="#" data-dismiss="modal"> 
+							<i class="glyphicon glyphicon-remove icon-white"></i> &nbsp;Cancel&nbsp;</a>
+						</div>
+						
+						</form>
+					</div>
+				</div>
+			</div>
+			
+		</div>
 	<!--/.fluid-container-->
 
 	<!-- external javascript -->

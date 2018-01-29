@@ -108,4 +108,16 @@
 		a left join t_training b on a.training_id = b.training_id left join
 		t_employee c on c.er_number = #{erId};
 	</select>
+	
+	<select id="queryRuleByEr" parameterType="String"  resultType="String">
+		select RULE_ID from t_employee_rule_map where ER = #{er}
+	</select>
+	
+	<insert id="configRule" >
+		insert into t_employee_rule_map (ID, ER, RULE_ID) VALUES (#{id}, #{er}, #{ruleId});
+	</insert>
+	
+	<update id="updateRule">
+		update t_employee_rule_map set RULE_ID = #{ruleId} WHERE ER = #{er};
+	</update>
 </mapper>

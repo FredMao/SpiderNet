@@ -1,24 +1,5 @@
 $(document).ready(function () {
 	
-	$('#knowledgeBoxForm').bootstrapValidator({
-		message: 'This value is not valid',
-
-        feedbackIcons: {
-            valid: 'glyphicon glyphicon-ok',
-            invalid: 'glyphicon glyphicon-remove',
-            validating: 'glyphicon glyphicon-refresh'
-        },
-        fields: {
-        	pointTitle: {
-        		validators: {
-                    notEmpty: {
-                        message: '请输入ER号'
-                    }
-        		}
-        	}
-        }
-	});
-	
 	loadKnowlegedPointList('');
 	
 });
@@ -39,7 +20,7 @@ function loadKnowlegedPointList(pageState){
 			$("#knowledgePointList tbody").remove();
 			var id = '';
 			var title = '';
-			var tbody = $("<tbody>");
+			var tbody = $("<tbody id='knowledge_body'>");
 			tbody.appendTo($("#knowledgePointList"));
 			
 			for (var i = 0; i < result.data.length; i++) {
@@ -115,7 +96,7 @@ function loadKnowlegedPointList(pageState){
 			$("#detail_title").html(title+'&nbsp;>&nbsp;');
 			queryItemDetailByPid(id);
 			$('#pointDetail').attr('parentid', id);
-			$("#knowledgePointList tr").bind("click",function(){
+			$("#knowledge_body tr").bind("click",function(){
 				
 				var pid = $(this).find("td:first").text();
 				
@@ -219,6 +200,7 @@ function queryDetail(tar){
 }
 
 function addKnowledgePoint(type, tar){
+	resetForm();
 	if (type == 0){
 		//simple add knowledge point
 		$('#knowledgePointId').val(0);
@@ -262,16 +244,37 @@ function loadFormData(id){
 	})
 }
 
+function resetForm(){
+	$("#knowledgePointId").val("");
+	$('#pointTitle').val("");
+	$('#description').val("");
+	$('#pid').val("");
+	$('#status').val("");
+}
+
 function saveknowledgePoint(){
-	
 	var knowledgePointId = $('#knowledgePointId').val();
 	var pointTitle = $('#pointTitle').val();
 	var description = $('#description').val();
 	var pid = $('#pid').val();
 	var status = $('input[name="status"]:checked').val();
 	var sort = $("#Sort").val();
+	 $('#confirm_btn').attr("disabled", true);
+	if (pointTitle == ''){
+		$("#failureAlert").html('Please Enter Knowledge Point Title').show();
+			setTimeout(function () {
+				$("#failureAlert").hide();
+				 $('#confirm_btn').attr("disabled", false);
+		}, 1000);
+		return;
+	}
 	
-	if (pointTitle == '' || sort == ''){
+	if (sort == ''){
+		$("#failureAlert").html('Please Enter Sort').show();
+			setTimeout(function () {
+				$("#failureAlert").hide();
+				$('#confirm_btn').attr("disabled", false);
+		}, 1000);
 		return;
 	}
 	
@@ -287,21 +290,17 @@ function saveknowledgePoint(){
 				$("#successAlert").html('Operator Success').show();
 				setTimeout(function () {
 					$("#successAlert").hide();
-					$("#knowledgePointId").val("");
-					$('#pointTitle').val("");
-					$('#description').val("");
-					$('#pid').val("");
-					$('#status').val("");
+					resetForm();
 					$('#addModel').modal('hide');
 
 					if (pid == 0){
-						loadKnowlegedPointList('first');
+						loadKnowlegedPointList('');
 					}else{
 						var id =  $('#pointDetail').attr('parentid');
 						queryItemDetailByPid(id);
 					}
 					
-					
+					$('#confirm_btn').attr("disabled", false);
 					
 			    }, 1000);
 			}else{

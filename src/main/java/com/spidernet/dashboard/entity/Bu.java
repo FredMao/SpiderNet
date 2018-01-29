@@ -18,6 +18,8 @@ public class Bu
     private String contactNumber;
     
     private String mangerName;
+    
+    private String orgName;
 
     public String getBuId()
     {
@@ -85,7 +87,15 @@ public class Bu
         // TODO Auto-generated constructor stub
     }
 
-    @Override
+    public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	@Override
     public String toString()
     {
         return "Bu [buId=" + buId + ", buName=" + buName + ", description="
