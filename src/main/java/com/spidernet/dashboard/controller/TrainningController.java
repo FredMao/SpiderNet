@@ -121,7 +121,8 @@ public class TrainningController
         String teacher = request.getParameter("teacher");
         String trainningURL = request.getParameter("trainningURL");
         String status = "0";
-        String capabilityId = request.getParameter("skillPoints");
+        String knowledgePoint = request.getParameter("knowledgePoint");
+        String childKnowledgePoints = request.getParameter("childKnowledgePoints");
         
         Trainning trainning = new Trainning();
         
@@ -132,18 +133,14 @@ public class TrainningController
         trainning.setTeacher(teacher);
         trainning.setUrl(trainningURL);
         trainning.setStatus(status);
-        
-        CapabilityTraining capabilityTraining = new CapabilityTraining();
-        
-        capabilityTraining.setCapabilityId(capabilityId);
-        
-        capabilityTraining.setTrainingId(trainningId);
+        trainning.setKnowledgePoint(knowledgePoint);
+        trainning.setSubTopic(childKnowledgePoints);
+
         
         boolean resultFlag = trainningService.addTraining(trainning);
+
         
-        boolean resultFlags = capabilityTrainingService.addCapabilityTrainning(capabilityTraining);
-        
-        return (resultFlag && resultFlags);
+        return (resultFlag);
     }
     
     @RequestMapping("/queryTrainingByName")
@@ -167,5 +164,18 @@ public class TrainningController
         
         return trainingList;
     }
+
+    @RequestMapping("/queryTrainingId")
+    @ResponseBody
+    public Object queryTrainingById(final HttpServletRequest request,
+                                    final HttpServletResponse response)
+    {
+        String trainningId = request.getParameter("traningId");
+
+        Trainning training = trainningService.queryTrainingById(trainningId);
+
+        return training;
+    }
+
 
 }

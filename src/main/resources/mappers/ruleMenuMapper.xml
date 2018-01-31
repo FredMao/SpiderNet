@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spidernet.dashboard.dao.RuleMenuMapper">
+	<resultMap id="ruleMenuMap" type="com.spidernet.dashboard.entity.RuleMenu">
+		<id property="ruleId" column="rule_id" javaType="String" />
+		<result property="menuId" column="menu_id" javaType="String" />
+	</resultMap>
+
+	<select id="accountRuleMenu" parameterType="String" resultType="int">
+		select count(0) from t_rule_menu where
+		rule_id=#{ruleId}
+	</select>
+	
+	<insert id="addRuleMenu" parameterType="com.spidernet.dashboard.entity.RuleMenu">
+	    INSERT INTO t_rule_menu (rule_id,menu_id)
+        VALUES
+        (#{ruleId},#{menuId})
+	</insert>
+	
+	<delete id="deleteRuleMenu" parameterType="com.spidernet.dashboard.entity.RuleMenu">
+	   DELETE FROM t_rule_menu WHERE rule_id = #{ruleId} 
+	</delete>
+	
+	<select id="queryRuleMenu" parameterType="String" resultMap="ruleMenuMap">
+	    SELECT rule_id as ruleId,menu_id as menuId FROM t_rule_menu WHERE rule_id = #{ruleId}
+	</select>
+</mapper>

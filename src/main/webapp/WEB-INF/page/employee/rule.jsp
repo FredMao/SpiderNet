@@ -64,6 +64,13 @@
 <!-- The fav icon -->
 <link rel="shortcut icon" href="<%=path%>/img/favicon.ico">
 
+<link rel="stylesheet" href="<%=path %>/bower_components/zTree/style/bootstrapStyle.css" type="text/css">
+
+<script type="text/javascript" src="<%=path %>/bower_components/zTree/js/jquery.ztree.core-3.5.js"></script>
+<script type="text/javascript" src="<%=path %>/bower_components/zTree/js/jquery.ztree.excheck-3.5.js"></script>
+<script type="text/javascript" src="<%=path %>/bower_components/zTree/js/jquery.ztree.exedit-3.5.js"></script>
+
+
 </head>
 
 <body>
@@ -206,7 +213,7 @@
 							<div class="group">
 								<label class="col-sm-2 control-label">Remark</label>
 								<div class="col-sm-10">
-									<input type="text" class="form-control" name="remark" id="remark"/>
+									<textarea class="form-control" name="remark" id="remark" rows="5" ></textarea>									
 								</div>
 							</div>
 						</div>
@@ -223,6 +230,38 @@
 				</div>
 			</div>
 			<!--/span-->
+		</div>	
+		
+		
+		<div class="modal fade" id="menuModal" tabindex="-1" role="dialog"
+			aria-labelledby="myModalLabel" aria-hidden="true">			
+			<div class="modal-dialog">
+			<div class="modal-content">	            
+	            <div class="box-header well" data-original-title="">
+						<h2><i class="glyphicon glyphicon-user"></i> Menu Show</h2>
+
+						<div class="box-icon">
+							<a href="#" class="btn btn-round btn-default  btn-minimize ">
+							    <i class="glyphicon glyphicon-chevron-up"></i></a> 
+							<a href="#" class="btn btn-round btn-default"  data-dismiss="modal" onClick="cancelRuleMenu()">
+								<i class="glyphicon glyphicon-remove"></i></a>
+						</div>
+					</div>
+					
+	            <div class="box-content">
+	            <form id="ruleMenuForm" class="form-horizontal" method="post">
+	                <input type="hidden" name="ruleId" id="ruleId" />
+	                <input type="hidden" name="menuIds" id="menuIds" />
+	                <ul id="treeDemo" class="ztree"></ul>
+	                <div class="center">
+						<button type="submit" id="ruleMenuBtn" class="btn btn-success">Confirm</button>
+						<a class="btn btn-info" href="#" data-dismiss="modal" onClick="cancelRuleMenu()"> 
+						<i class="glyphicon glyphicon-remove icon-white"></i> Cancel</a>
+					</div>
+				</form>
+	            </div>
+	        </div>
+	        </div>
 		</div>		
 
 		<c:import url="/service/manage/footer" />

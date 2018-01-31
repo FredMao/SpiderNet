@@ -1,5 +1,6 @@
 package com.spidernet.dashboard.controller;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.Resource;
@@ -18,6 +19,7 @@ import com.spidernet.dashboard.entity.Employee;
 import com.spidernet.dashboard.entity.EmployeeDetl;
 import com.spidernet.dashboard.service.EmployeeDetlService;
 import com.spidernet.dashboard.service.EmployeeService;
+import com.spidernet.dashboard.service.MenuService;
 
 @Controller
 @SessionAttributes("employeeTemp")
@@ -29,6 +31,9 @@ public class LoginController
 
     @Resource
     EmployeeDetlService employeeDetlService;
+    
+    @Resource
+	MenuService menuService;    
 
     private static Logger logger = LoggerFactory
             .getLogger(LoginController.class);
@@ -111,7 +116,11 @@ public class LoginController
             String empId = employeeTemp.getEmployeeId();
             EmployeeDetl employeeDetl = employeeDetlService.queryDetail(empId);
             request.getSession().setAttribute("employeeDetl", employeeDetl);
-
+            
+            //insert user menu information
+        	List<Object> menuObject = menuService.menuListByEmp(empId);
+            request.getSession().setAttribute("menuList", menuObject);
+            
             return true;
         }
         else
@@ -131,4 +140,16 @@ public class LoginController
 
         return "login";
     }
+    
+//    @RequestMapping("/listMenu")
+//    @ResponseBody
+//    public List<Object> menuList(final HttpServletRequest request,
+//            final HttpServletResponse response)
+//    {
+//    	Employee emp = (Employee) request.getSession().getAttribute("employee");
+//    	String empId = emp.getEmployeeId();
+//    	List<Object> menuList = menuService.menuListByEmp(empId);
+//    	
+//    	return menuList;
+//    }
 }

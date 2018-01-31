@@ -13,7 +13,7 @@ public class Employee implements Serializable
     private String hrNumber;
     private String name;
     private String eName;
-    private String password;
+    private String password = "123456";
     private String wechatOpenId;
     private String skill;
     private Bu bu;

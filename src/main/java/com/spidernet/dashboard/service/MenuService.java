@@ -21,4 +21,8 @@ public interface MenuService {
 	String getNameById(int id);
 
 	int getMaxId();
+	
+	List<Object> menuList(List<Menu> menu);
+
+	List<Object> menuListByEmp(String empId);
 }

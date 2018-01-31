@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -45,15 +46,22 @@ public class TrainPlanController {
         logger.info("trainPlan : test");
         String parentTrainingName = request.getParameter("parentTrainingName");
         String childTrainName = request.getParameter("childTrainingName");
-        String trainTime = request.getParameter("trainningTime");
+        String trainTimeStart = request.getParameter("trainningTimeStart");
+        String trainTimeEnd = request.getParameter("trainningTimeStart");
         String trainRoom = request.getParameter("trainingRoom");
-        int participants = Integer.parseInt(request.getParameter("participantsNumber"));
+        int participants = 0;
+        if(NumberUtils.isNumber(request.getParameter("participantsNumber"))) {
+        	participants =  Integer.parseInt(request.getParameter("participantsNumber"));
+        }else {
+        	return false;
+        }
         String active = "Y";
         String trainCourceId = request.getParameter("trainingCourceId");
         TrainPlan trainPlan = new TrainPlan();
         trainPlan.setParentTrainingName(parentTrainingName);
         trainPlan.setChildTrainName(childTrainName);
-        trainPlan.setTrainTime(trainTime);
+        trainPlan.setTrainTimeStart(trainTimeStart);
+        trainPlan.setTrainTimeEnd(trainTimeEnd);
         trainPlan.setTrainRoom(trainRoom);
         trainPlan.setParticipants(participants);
         trainPlan.setActive(active);
@@ -68,16 +76,26 @@ public class TrainPlanController {
 
         String parentTrainingName = request.getParameter("parentTrainingName");
         String childTrainName = request.getParameter("childTrainingName");
-        String trainTime = request.getParameter("trainningTime");
+        String trainTimeStart = request.getParameter("trainningTimeStart");
+        String trainTimeEnd = request.getParameter("trainningTimeEnd");
         String trainRoom = request.getParameter("trainingRoom");
-        int participants = Integer.parseInt(request.getParameter("participantsNumber"));
+        int participants = 0;
+        if(NumberUtils.isNumber(request.getParameter("participantsNumber"))) {
+        	participants =  Integer.parseInt(request.getParameter("participantsNumber"));
+        }else {
+        	return false;
+        }
         String trainCourceId = request.getParameter("trainingCourceId");
+        int  allocationId = Integer.parseInt(request.getParameter("allocationPlanId"));
         TrainPlan trainPlan = new TrainPlan();
         trainPlan.setParentTrainingName(parentTrainingName);
         trainPlan.setChildTrainName(childTrainName);
-        trainPlan.setTrainTime(trainTime);
+        trainPlan.setTrainTimeStart(trainTimeStart);
+        trainPlan.setTrainTimeStart(trainTimeEnd);
         trainPlan.setTrainRoom(trainRoom);
         trainPlan.setParticipants(participants);
+        trainPlan.setAllocationPlanId(allocationId);
+        trainPlan.setActive("Y");
         trainPlan.setTrainCourseId(trainCourceId);
 
         return trainPlanService.updateTrainPlanByParentTrainName(trainPlan);

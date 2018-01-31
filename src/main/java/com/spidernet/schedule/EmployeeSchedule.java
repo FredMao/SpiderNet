@@ -58,6 +58,7 @@ public class EmployeeSchedule extends AbstractSchedule {
 	@Override
 	public void handle() {
 		
+		logger.info("New Timer Start");
 		if (null == employeeUrl || "".equals(employeeUrl)) {
 			logger.error("miss sync employee url config.");
 			return;
@@ -87,20 +88,22 @@ public class EmployeeSchedule extends AbstractSchedule {
 		sysExecService.editSysExec(sysExec);
 		
 		reqObj.setLastUpdateTime(lastUpdateTime);
-		
+		logger.info("request:"+reqObj.toString());
 		HttpMessage message = null;
 		try {
-			message = iSendRequest.doPost(employeeUrl, reqObj.getDataForMap());
+			//message = iSendRequest.doPost(employeeUrl, reqObj.getDataForMap());
+			message = iSendRequest.doPostJson(employeeUrl, reqObj.toString());
 			String data = message.getBody();
 			JSONObject jsonObj = new JSONObject(data);
 			String resultcode  = jsonObj.getString(Constants.SyncEmployeeResponse.RESULT);
 			if (resultcode.equals(Constants.RESULT_CODE.ERROR)){
 				logger.error("Receive Employee Error, errorcode:"+resultcode);
-			}else if(jsonObj.has(Constants.SyncEmployeeResponse.ERROR_LIST)){
+				
 				JSONArray errList = jsonObj.getJSONArray(Constants.SyncEmployeeResponse.ERROR_LIST);
 				for (Object errorCode : errList){
-					logger.info("Error code:"+errorCode);
+					logger.error("Error code:"+errorCode);
 				}
+				
 			}else{
 				List datas = this.parse(jsonObj);
 				logger.info("Receive Employee data success, size["+datas.size()+"]");
@@ -111,8 +114,6 @@ public class EmployeeSchedule extends AbstractSchedule {
 			e.printStackTrace();
 			return;
 		}
-		
-		System.out.println(">>:"+message.getBody());
 	}
 	
 	public List<Employee> parse(JSONObject data){
@@ -128,12 +129,12 @@ public class EmployeeSchedule extends AbstractSchedule {
 				employee = new Employee();
 				employee.setErNumber(!item.has(Constants.SyncEmployee.ER_NUM)?"":item.getString(Constants.SyncEmployee.ER_NUM));
 				employee.setHrNumber(!item.has(Constants.SyncEmployee.HR_NUM)?"":item.getString(Constants.SyncEmployee.HR_NUM));
-				employee.seteName(!item.has(Constants.SyncEmployee.E_USER_NAME)?"":item.getString(Constants.SyncEmployee.E_USER_NAME));
+				employee.seteName((!item.has(Constants.SyncEmployee.E_USER_NAME) || "null".equals(item.get(Constants.SyncEmployee.E_USER_NAME).toString()))?"":item.getString(Constants.SyncEmployee.E_USER_NAME));
 				employee.setName(!item.has(Constants.SyncEmployee.C_USER_NAME)?"":item.getString(Constants.SyncEmployee.C_USER_NAME));
 				employee.setSkill(!item.has(Constants.SyncEmployee.SKILL)?"":item.getString(Constants.SyncEmployee.SKILL));
 				bu = new Bu();
-				bu.setBuName(!item.has(Constants.SyncEmployee.BU_NAME)?"":item.getString(Constants.SyncEmployee.BU_NAME));
-				bu.setOrgName(!item.has(Constants.SyncEmployee.ORG_NAME)?"":item.getString(Constants.SyncEmployee.ORG_NAME));
+				bu.setOrgName(!item.has(Constants.SyncEmployee.BU_NAME)?"":item.getString(Constants.SyncEmployee.BU_NAME));
+				bu.setBuName(!item.has(Constants.SyncEmployee.ORG_NAME)?"":item.getString(Constants.SyncEmployee.ORG_NAME));
 				employee.setBu(bu);
 				result.add(employee);
 			}
@@ -148,6 +149,7 @@ public class EmployeeSchedule extends AbstractSchedule {
 		logger.info("Operator Data start.");
 		Bu bu = null;
 		List list = null;
+		int noErNumCount = 0;
 		for (Employee employee : datas){
 			bu = employee.getBu();
 			list = buService.queryBus(bu);
@@ -166,14 +168,24 @@ public class EmployeeSchedule extends AbstractSchedule {
 			}
 			employee.setBuId(bu_id);
 			
-			if (!userService.checkErExists(employee.getErNumber())){
-				
+			if ("".equals(employee.getErNumber())){
+				noErNumCount ++;
+				logger.error("The user has no ErNum and HrNum:["+employee.getName() +"],["+employee.geteName()+"]");
+			}else if (!userService.checkErExists(employee.getErNumber())){
+				//exists
+				Employee emp = userService.fetchByErNumber(employee.getErNumber());
+				emp.setBuId(bu.getBuId());
+				emp.setHrNumber(employee.getHrNumber());
+				emp.seteName(employee.geteName());
+				emp.setName(employee.getName());
+				emp.setSkill(employee.getSkill());
+				userService.updEmployee(emp);
 			}else{
 				employee.setEmployeeId(Utils.getUUID());
 				userService.addEmployee(employee);
 			}
 		}
-		logger.info("Operator Data Done.total size:"+datas.size());
+		logger.info("Operator Data Done.total size:"+datas.size()+", Skip "+noErNumCount+" with that has no ErNum");
 	}
 
 	public String getEmployeeUrl() {

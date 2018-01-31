@@ -69,12 +69,7 @@
 <link rel="shortcut icon" href="<%=path%>/img/favicon.ico">
 <link rel="stylesheet" href="<%=path %>/bower_components/zTree/style/bootstrapStyle.css" type="text/css">
 
-<script type="text/javascript" src="<%=path %>/bower_components/zTree/js/jquery.ztree.core-3.5.js"></script>
-<script type="text/javascript" src="<%=path %>/bower_components/zTree/js/jquery.ztree.excheck-3.5.js"></script>
-<script type="text/javascript" src="<%=path %>/bower_components/zTree/js/jquery.ztree.exedit-3.5.js"></script>
-
 <script type="text/javascript" src="<%=path %>/js/spidernet/menuJs.js"></script>
-
 </head>
 
 <body>
@@ -141,7 +136,7 @@
 					    <input type="hidden" class="form-control" name="remark" id="b_remark" />
 					    <input type="hidden" class="form-control" name="sort" id="sort" />
 					</div>
-					<div class="box-content alerts" id="alertInfo">
+					 <div class="box-content alerts" id="alertInfo">
 		            </div>
                     <div class="form-group">
                         <label  for="exampleInputEmail1"><h4>Node Name</h4></label>
@@ -258,5 +253,8 @@
 	<script type="text/javascript" src="<%=path %>/js/bootstrap-select.js"></script>
 	<script type="text/javascript" src="<%=path %>/js/bootstrap-select.min.js"></script>		
 
+	<script type="text/javascript" src="<%=path %>/bower_components/zTree/js/jquery.ztree.core-3.5.js"></script>
+	<script type="text/javascript" src="<%=path %>/bower_components/zTree/js/jquery.ztree.excheck-3.5.js"></script>
+	<script type="text/javascript" src="<%=path %>/bower_components/zTree/js/jquery.ztree.exedit-3.5.js"></script>
 </body>
 </html>

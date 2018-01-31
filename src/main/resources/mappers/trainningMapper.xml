@@ -9,20 +9,22 @@
 		<result property="location" column="LOCATION" javaType="String" />
 		<result property="teacher" column="TEACHER" javaType="String" />
 		<result property="url" column="URL" javaType="String" />
+		<result property="knowledgePoint" column="KNOWLEDGE_POINT" javaType="String" />
+		<result property="SubTopic" column="SUB_TOPIC" javaType="String" />
 		<result property="status" column="STATUS" javaType="String" />
 	</resultMap>
 
 	<select id="fetchAllTrainning" resultMap="trainningMap">
-		select TRAINING_ID, COURSE_NAME, DATE_FORMAT(TIME,'%Y-%m-%d %H:%i') as time, LOCATION, TEACHER, URL, STATUS
+		select TRAINING_ID, COURSE_NAME, DATE_FORMAT(TIME,'%Y-%m-%d %H:%i') as time, LOCATION, TEACHER, URL, KNOWLEDGE_POINT,SUB_TOPIC,STATUS
 		from t_training where NOW() &lt; date_sub(TIME,interval 1 day) AND TRAINING_ID in (select TRAINING_ID FROM
 		t_capability_training where CAPABILITY_ID =
 		#{capabilityId}) AND TRAINING_ID NOT IN (select TRAINING_ID FROM t_personal_training WHERE EMPLOYEE_ID = #{employeeId});
 	</select>
 	
 	<insert id="addTraining" parameterType="com.spidernet.dashboard.entity.Trainning">
-	    insert into t_training (TRAINING_ID,COURSE_NAME,TIME,LOCATION,TEACHER,URL,STATUS)
+	    insert into t_training (TRAINING_ID,COURSE_NAME,TIME,LOCATION,TEACHER,URL,KNOWLEDGE_POINT,SUB_TOPIC,STATUS)
 	    values
-	    (#{trainningId},#{courseName},#{time},#{location},#{teacher},#{url},#{status})
+	    (#{trainningId},#{courseName},#{time},#{location},#{teacher},#{url},#{knowledgePoint},#{SubTopic},#{status})
 	</insert>
 	
 	<select id="queryTrainingInfo" parameterType="com.spidernet.dashboard.entity.TrainningPageCondition"
@@ -54,7 +56,7 @@
 	</select>
 	
 	<select id="queryTrainingById" parameterType="String" resultType="com.spidernet.dashboard.entity.Trainning">
-	    SELECT TRAINING_ID as trainningId,COURSE_NAME as courseName,TIME as time,LOCATION as location,TEACHER as teacher,URL as url,STATUS as status FROM t_training WHERE TRAINING_ID = #{trainningId}
+	    SELECT TRAINING_ID as trainningId,COURSE_NAME as courseName,TIME as time,LOCATION as location,TEACHER as teacher,URL as url,KNOWLEDGE_POINT as knowledgePoint,SUB_TOPIC as SubTopic,STATUS as status FROM t_training WHERE TRAINING_ID = #{trainningId}
 	</select>
 	
 	<select id="queryPersonTrainingNames" parameterType="com.spidernet.dashboard.entity.EmpPageCondition" resultType="String">

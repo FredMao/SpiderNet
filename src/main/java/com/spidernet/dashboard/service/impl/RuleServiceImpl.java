@@ -11,7 +11,9 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.spidernet.dashboard.dao.RuleMapper;
+import com.spidernet.dashboard.dao.RuleMenuMapper;
 import com.spidernet.dashboard.entity.Rule;
+import com.spidernet.dashboard.entity.RuleMenu;
 import com.spidernet.dashboard.entity.RulePageCondition;
 import com.spidernet.dashboard.service.RuleService;
 
@@ -21,7 +23,10 @@ public class RuleServiceImpl implements RuleService
 {
 
     @Resource
-    private RuleMapper ruleMapper;
+    private RuleMapper ruleMapper; 
+    
+    @Resource
+    private RuleMenuMapper ruleMenuMapper;
 
     @Override
     public boolean addRule(Rule rule)
@@ -114,5 +119,37 @@ public class RuleServiceImpl implements RuleService
 		// TODO Auto-generated method stub
 		return ruleMapper.queryRuleInfoAll();
 	}
+	
+	@Override
+	public int accountRuleMenu(String ruleId) {
+		return ruleMenuMapper.accountRuleMenu(ruleId);
+		
+	}
+
+	@Override
+	public Boolean deleteRuleMenu(RuleMenu ruleMenu) {
+		if (ruleMenuMapper.deleteRuleMenu(ruleMenu) > 0)
+        {
+            return true;
+        }else{
+            return false;
+        }
+	}
+
+	@Override
+	public Boolean addRuleMenu(RuleMenu ruleMenu) {
+		if(ruleMenuMapper.addRuleMenu(ruleMenu)>0){
+            return true;
+        }else{
+            return false;
+        }
+	}
+	
+	@Override
+    public List<RuleMenu> queryRuleMenu(String ruleId)
+    {
+		List<RuleMenu> ruleMenuList = ruleMenuMapper.queryRuleMenu(ruleId);
+        return ruleMenuList;
+    }
 
 }

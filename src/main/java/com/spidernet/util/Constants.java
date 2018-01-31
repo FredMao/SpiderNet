@@ -34,8 +34,8 @@ public interface Constants
     
     public  static interface SyncEmployee{
     	String ER_NUM = "erNum"; 
-    	String HR_NUM = "erNum"; 
-    	String C_USER_NAME = "hrNum"; 
+    	String HR_NUM = "hrNum"; 
+    	String C_USER_NAME = "cUserName"; 
     	String E_USER_NAME = "eUserName"; 
     	String SKILL = "skill"; 
     	String ORG_NAME = "orgName"; 

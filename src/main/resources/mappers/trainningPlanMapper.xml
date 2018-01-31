@@ -6,7 +6,8 @@
 		<id property="allocationPlanId" column="allocation_plan_ID" javaType="int" />
 		<result property="parentTrainingName" column="parent_training_name" javaType="String" />
 		<result property="childTrainName" column="child_training_Name" javaType="String" />
-		<result property="trainTime" column="training_time" javaType="String" />
+		<result property="trainTimeStart" column="training_time_start" javaType="String" />
+		<result property="trainTimeEnd" column="training_time_End" javaType="String" />
 		<result property="trainRoom" column="training_room" javaType="String" />
 		<result property="participants" column="participants_number" javaType="int" />
 		<result property="active" column="active" javaType="String" />
@@ -15,7 +16,7 @@
 
 
 	<select id="queryTrainPlanByTrainCourseId" parameterType="String" resultMap="trainPlanMap">
-	    select * FROM t_allocation_plan WHERE training_cource_id = #{TrainCourseId} and active = 'Y' ORDER BY training_time DESC
+	    select * FROM t_allocation_plan WHERE training_cource_id = #{TrainCourseId} and active = 'Y'
 	</select>
 	
 	<select id="queryParentName" parameterType="String" resultType="String">
@@ -27,25 +28,25 @@
 	</select>
 
 	<insert id="addTrainPlan"  parameterType="com.spidernet.dashboard.entity.TrainPlan">
-		insert into t_allocation_plan(parent_training_name,child_training_name,training_time,
+		insert into t_allocation_plan(parent_training_name,child_training_name,training_time_start,training_time_end,
 		training_room,participants_number,active,training_cource_id)
 		VALUES
-		(#{parentTrainingName},#{childTrainName},#{trainTime},#{trainRoom},#{participants},#{active},#{TrainCourseId})
+		(#{parentTrainingName},#{childTrainName},#{trainTimeStart},#{trainTimeEnd},#{trainRoom},#{participants},#{active},#{TrainCourseId})
 	</insert>
 
 	<update id="updateTrainPlanByParentTrainName"  parameterType="com.spidernet.dashboard.entity.TrainPlan">
 			UPDATE t_allocation_plan
 			set
 			  child_training_name = #{childTrainName},parent_training_name = #{parentTrainingName},
-			  training_cource_id = #{TrainCourseId},
-			  training_time = #{trainTime},training_room = #{trainRoom},participants_number = #{participants},
+			  training_time_start = #{trainTimeStart},
+			  training_time_end = #{trainTimeEnd},training_room = #{trainRoom},participants_number = #{participants},
 			  active = #{active}
 
 			WHERE allocation_plan_ID = #{allocationPlanId} and active = 'Y'
   	</update>
 
 	<select id="queryTrainPlanByAllocationPlanId" parameterType="String" resultMap="trainPlanMap">
-		select * FROM t_allocation_plan WHERE allocation_plan_ID = #{allocationPlanId} and active = 'Y' ORDER BY training_time DESC
+		select * FROM t_allocation_plan WHERE allocation_plan_ID = #{allocationPlanId} and active = 'Y'
 	</select>
 
 	<update id="deleteByAllocationPlanId"  parameterType="com.spidernet.dashboard.entity.TrainPlan">

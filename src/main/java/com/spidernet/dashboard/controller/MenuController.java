@@ -69,8 +69,7 @@ public class MenuController {
 		
 		List<Menu> menuList = menuService.queryMenuList();
 		
-		List<Object> menu = menuList(menuList);
-		return menu;
+		return menuService.menuList(menuList);
 	}
     
     @RequestMapping("/updateMenu")
@@ -123,51 +122,13 @@ public class MenuController {
         return resultFlag;
     }
 	
-	private List<Object> menuList(List<Menu> menu){  
-		 List<Object> list = new ArrayList<Object>(); 
-       this.menuCommon = menu;  
-       for (Menu x : menu) {     
-           Map<String,Object> mapArr = new LinkedHashMap<String, Object>(); 
-           mapArr.put("id", x.getId());  
-           mapArr.put("name", x.getName());
-           mapArr.put("MenuUrl", x.getUrl());
-           mapArr.put("picUrl", x.getPicUrl());
-           mapArr.put("pId", x.getParentId()); 
-           String pName = getNameById(x.getParentId());
-           mapArr.put("pName", pName);  
-           mapArr.put("remark", x.getRemark());
-           mapArr.put("sort", x.getSort());
-           //System.out.println(x.getParentId());
-//           if(x.getParentId().equals("0")){  
-              // mapArr.put("child", menuChild(x.getId()));    
-           list.add(mapArr);  
-//           }  
-       }     
-       return list;  
-   } 
 	
 	private String getNameById(int id) {
 		return menuService.getNameById(id);
 	}  
      		 
       
-//    private List<?> menuChild(String id){  
-//        List<Object> lists = new ArrayList<Object>();  
-//        for(Menu a:menuCommon){  
-//            Map<String,Object> childArray = new LinkedHashMap<String, Object>();  
-//            if(a.getParentId().equals(id)){  
-//                childArray.put("id", a.getId());  
-//                childArray.put("name", a.getName());
-//                childArray.put("url", a.getUrl());
-//                childArray.put("picUrl", a.getPicUrl());
-//                childArray.put("parentId", a.getParentId());  
-//                childArray.put("child", menuChild(a.getId()));    
-//                lists.add(childArray);  
-//            }  
-//        }  
-//        return lists;  
-//          
-//    }  
+  
 	
 
 }

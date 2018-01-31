@@ -22,9 +22,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.spidernet.dashboard.entity.CCapability;
+import com.spidernet.dashboard.entity.CapabilityB;
+import com.spidernet.dashboard.entity.CapabilityMap;
 import com.spidernet.dashboard.entity.EmpPageCondition;
 import com.spidernet.dashboard.entity.EmployeeInfo;
+import com.spidernet.dashboard.entity.ProCapability;
 import com.spidernet.dashboard.entity.TrainingInfo;
+import com.spidernet.dashboard.entity.TrainingInfoPageCondition;
 import com.spidernet.dashboard.entity.Trainning;
 import com.spidernet.dashboard.service.EmployeeInfoService;
 import com.spidernet.dashboard.service.ExamService;
@@ -158,60 +163,60 @@ public class EmployeeInfoController {
 
 			WritableWorkbook wwb = null;
 
-			// 鍒涘缓鍙啓鍏ョ殑Excel宸ヤ綔绨�
+			// 创建可写入的Excel工作簿
 
 			File file = new File(fileName);
 			if (!file.exists()) {
 				file.createNewFile();
 			}
-			// 浠ileName涓烘枃浠跺悕鏉ュ垱寤轰竴涓猈orkbook
+			// 以fileName为文件名来创建一个Workbook
 			wwb = Workbook.createWorkbook(file);
 
-			// 鍒涘缓宸ヤ綔琛�
+			// 创建工作表
 			WritableSheet ws = wwb.createSheet("Shee 1", 0);
 
-			// 鏌ヨ鏁版嵁搴撲腑鎵�鏈夌殑鏁版嵁
+			// 查询数据库中所有的数据
 			List<EmployeeInfo> listE = employeeInfoService.queryEmpList(trainingId);
 
-			// 绗竴琛屽煿璁悕绉�
+			// 第一行培训名称
 			WritableCellFormat headerFormat = new WritableCellFormat();
 			headerFormat.setAlignment(Alignment.CENTRE);
 			ws.mergeCells(0, 0, 7, 0);
 			Label labelTraningName = new Label(0, 0,
-					training.getTime().substring(0, 10) + "" + training.getCourseName() + "鍩硅", headerFormat);
+					training.getTime().substring(0, 10) + "" + training.getCourseName() + "培训", headerFormat);
 			ws.addCell(labelTraningName);
 
-			// 绗簩琛屽煿璁甯�
+			// 第二行培训讲师
 			ws.mergeCells(0, 1, 1, 1);
 			ws.mergeCells(2, 1, 7, 1);
-			Label labelTeacher = new Label(0, 1, "鍩硅璁插笀");
+			Label labelTeacher = new Label(0, 1, "培训讲师");
 			ws.addCell(labelTeacher);
 			Label labelTeacherName = new Label(2, 1, training.getTeacher());
 			ws.addCell(labelTeacherName);
 
-			// 绗笁琛屽煿璁椂闂�
+			// 第三行培训时间
 			ws.mergeCells(0, 2, 1, 2);
 			ws.mergeCells(2, 2, 7, 2);
-			Label labelTrainingTime = new Label(0, 2, "鍩硅鏃堕棿");
+			Label labelTrainingTime = new Label(0, 2, "培训时间");
 			ws.addCell(labelTrainingTime);
 			Label labelTime = new Label(2, 2, training.getTime());
 			ws.addCell(labelTime);
 
-			// 绗洓琛屽煿璁湴鐐�
+			// 第四行培训地点
 			ws.mergeCells(0, 3, 1, 3);
 			ws.mergeCells(2, 3, 7, 3);
-			Label labelTrainingLocation = new Label(0, 3, "鍩硅鍦扮偣");
+			Label labelTrainingLocation = new Label(0, 3, "培训地点");
 			ws.addCell(labelTrainingLocation);
 			Label labelLocation = new Label(2, 3, training.getLocation());
 			ws.addCell(labelLocation);
 
-			// 瑕佹彃鍏ュ埌鐨凟xcel琛ㄦ牸鐨勮鍙凤紝榛樿浠�0寮�濮�
-			Label labelEr = new Label(0, 4, "Er");// 琛ㄧず绗�
+			// 要插入到的Excel表格的行号，默认从0开始
+			Label labelEr = new Label(0, 4, "Er");// 表示第
 			Label labelHr = new Label(1, 4, "Hr");
-			Label labelName = new Label(2, 4, "涓枃鍚�");
-			Label labelEName = new Label(3, 4, "鑻辨枃鍚�");
-			Label labelBu = new Label(4, 4, "浜や粯閮�");
-			Label labelProject = new Label(5, 4, "椤圭洰");
+			Label labelName = new Label(2, 4, "中文名");
+			Label labelEName = new Label(3, 4, "英文名");
+			Label labelBu = new Label(4, 4, "交付部");
+			Label labelProject = new Label(5, 4, "项目");
 
 			ws.addCell(labelEr);
 			ws.addCell(labelHr);
@@ -234,21 +239,21 @@ public class EmployeeInfoController {
 				ws.addCell(labelProject_i);
 			}
 
-			// 鍐欒繘鏂囨。
+			// 写进文档
 			wwb.write();
-			// 鍏抽棴Excel宸ヤ綔绨垮璞�
+			// 关闭Excel工作簿对象
 			wwb.close();
 
 			String filename = training.getTime().substring(0, 10) + "" + training.getCourseName() + ".xls";
 
-			// 浠ユ祦鐨勫舰寮忎笅杞芥枃浠躲��
+			// 以流的形式下载文件。
 			InputStream fis = new BufferedInputStream(new FileInputStream(fileName));
 			byte[] buffer = new byte[fis.available()];
 			fis.read(buffer);
 			fis.close();
-			// 娓呯┖response
+			// 清空response
 			response.reset();
-			// 璁剧疆response鐨凥eader
+			// 设置response的Header
 			response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(filename, "UTF-8"));
 			// response.setContentType("application/octet-stream");
 			response.setContentType("application/vnd.ms-excel");

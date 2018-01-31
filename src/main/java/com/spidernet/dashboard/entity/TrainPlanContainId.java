@@ -5,7 +5,8 @@ public class TrainPlanContainId {
 	private int allocationPlanId;
 	private String parentTrainingName;
 	private String childTrainName;
-	private String trainTime;
+	private String trainTimeStart;
+	private String trainTimeEnd;
 	private String trainRoom;
 	private int participants;
 	private String active;
@@ -30,11 +31,17 @@ public class TrainPlanContainId {
 	public void setChildTrainName(String childTrainName) {
 		this.childTrainName = childTrainName;
 	}
-	public String getTrainTime() {
-		return trainTime;
+	public String getTrainTimeStart() {
+		return trainTimeStart;
 	}
-	public void setTrainTime(String trainTime) {
-		this.trainTime = trainTime;
+	public void setTrainTimeStart(String trainTimeStart) {
+		this.trainTimeStart = trainTimeStart;
+	}
+	public String getTrainTimeEnd() {
+		return trainTimeEnd;
+	}
+	public void setTrainTimeEnd(String trainTimeEnd) {
+		this.trainTimeEnd = trainTimeEnd;
 	}
 	public String getTrainRoom() {
 		return trainRoom;
@@ -72,5 +79,6 @@ public class TrainPlanContainId {
 	public void setChildId(String childId) {
 		this.childId = childId;
 	}
+
 	
 }

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spidernet.dashboard.entity.Rule;
+import com.spidernet.dashboard.entity.RuleMenu;
 import com.spidernet.dashboard.entity.RulePageCondition;
 import com.spidernet.dashboard.service.RuleService;
 import com.spidernet.util.Utils;
@@ -124,7 +125,7 @@ public class RuleController
         rule.setRemark(remark);              
         boolean resultFlag = ruleService.addRule(rule);
                
-        return (resultFlag);
+        return resultFlag;
     }
     
     @RequestMapping("/queryRuleByName")
@@ -168,7 +169,6 @@ public class RuleController
             final HttpServletResponse response)
     {
         logger.debug("---------Edit rule----------");
-        Boolean resultFlag = false;         
         String id = request.getParameter("id");
         String name = request.getParameter("name");
         String sort = request.getParameter("sort");
@@ -180,16 +180,8 @@ public class RuleController
         rule.setSort(sort);
         rule.setRemark(remark); 
         
-        resultFlag = ruleService.editRule(rule);        
-        if (resultFlag == true)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-        
+        Boolean resultFlag = ruleService.editRule(rule);
+		return resultFlag;       
     }
     
     @RequestMapping("/deleteRule")
@@ -198,22 +190,16 @@ public class RuleController
             final HttpServletResponse response)
     {
         logger.debug("---------Delete rule----------");
-        Boolean resultFlag = false;       
         String id = request.getParameter("id");
+       
+        RuleMenu ruleMenu = new RuleMenu();        
+        ruleMenu.setRuleId(id);        
+        ruleService.deleteRuleMenu(ruleMenu);
         
         Rule rule = new Rule();        
         rule.setId(id);
-        
-        resultFlag = ruleService.deleteRule(rule);        
-        if (resultFlag == true)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-        
+        Boolean resultFlag = ruleService.deleteRule(rule);
+		return resultFlag;                
     }
     
     @RequestMapping("/checkNameExists")
@@ -222,16 +208,13 @@ public class RuleController
             final HttpServletResponse response)
     {
     	logger.debug("---------Query rule name----------");
-    	String name = request.getParameter("name"); 
-    	
+    	String name = request.getParameter("name");     	
         boolean result = ruleService.checkNameExists(name);
         
-        Map<String,Boolean> map = new HashMap<>();
-        
+        Map<String,Boolean> map = new HashMap<>();        
         map.put("valid", result);
         
-        ObjectMapper mapper = new ObjectMapper();
-        
+        ObjectMapper mapper = new ObjectMapper();        
         String resultString = "";
         
         try
@@ -244,6 +227,40 @@ public class RuleController
         }
         
         return resultString;
+    }
+    
+    @RequestMapping("/addRuleMenu")
+    @ResponseBody
+    public Boolean addRuleMenu(final HttpServletRequest request,
+            final HttpServletResponse response)
+    {
+        logger.debug("---------addRuleMenu----------");
+        Boolean resultFlag = false;       
+        String ruleId = request.getParameter("ruleId");
+        String menuIds = request.getParameter("menuIds");
+        RuleMenu ruleMenu = new RuleMenu();        
+        ruleMenu.setRuleId(ruleId);
+        int  accountRuleMenu= ruleService.accountRuleMenu(ruleId);         
+        if(accountRuleMenu>0) {
+        	ruleService.deleteRuleMenu(ruleMenu);
+        }
+        String[] menuIdsArray = menuIds.split(",");
+        for(int i=0;i<menuIdsArray.length;i++) {
+        	ruleMenu.setMenuId(menuIdsArray[i]);
+        	resultFlag = ruleService.addRuleMenu(ruleMenu);
+        }      
+        return resultFlag;      
+    }
+    
+    @RequestMapping("/queryRuleMenu")
+    @ResponseBody
+    public Object queryRuleMenu(final HttpServletRequest request,
+            final HttpServletResponse response)
+    {
+    	logger.debug("---------Query rule menu by rule id----------");    	
+        String ruleId = request.getParameter("id"); 
+        List<RuleMenu> ruleMenuList = ruleService.queryRuleMenu(ruleId);        
+        return ruleMenuList;
     }
 
 }

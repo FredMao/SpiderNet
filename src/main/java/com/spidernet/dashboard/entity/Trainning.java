@@ -9,6 +9,9 @@ public class Trainning
     private String teacher;
     private String url;
     private String status;
+    private String knowledgePoint;
+    private String SubTopic;
+
 
     public String getTrainningId()
     {
@@ -65,5 +68,21 @@ public class Trainning
     public void setStatus(String status)
     {
         this.status = status;
+    }
+
+    public String getKnowledgePoint() {
+        return knowledgePoint;
+    }
+
+    public void setKnowledgePoint(String knowledgePoint) {
+        this.knowledgePoint = knowledgePoint;
+    }
+
+    public String getSubTopic() {
+        return SubTopic;
+    }
+
+    public void setSubTopic(String subTopic) {
+        SubTopic = subTopic;
     }
 }

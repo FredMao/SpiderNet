@@ -9,12 +9,14 @@
 		<result property="eName" column="ENAME" javaType="String" />
 		<result property="buName" column="NAME1" javaType="String" />
 		<result property="projectName" column="NAME2" javaType="String" />
+		<result property="projectName" column="NAME2" javaType="String" />
+		<result property="skill" column="SKILL" javaType="String" />
 	</resultMap>
 
 	<select id="queryEmpInfo" parameterType="com.spidernet.dashboard.entity.EmpPageCondition"
 		resultMap="employeeInfoMap">
 		select e.ER_NUMBER,e.HR_NUMBER,e.`NAME`,e.ENAME ,b.`NAME` as
-		NAME1,p.`NAME` as NAME2
+		NAME1,p.`NAME` as NAME2, e.SKILL
 		from t_employee AS e
 		LEFT JOIN t_bu AS b
 		ON e.BU_ID = b.BU_ID
@@ -52,7 +54,7 @@
 
 	<select id="queryEmpList" parameterType="String" resultMap="employeeInfoMap">
 		select e.ER_NUMBER,e.HR_NUMBER,e.`NAME`,e.ENAME ,b.`NAME` as
-		NAME1,p.`NAME` as NAME2
+		NAME1,p.`NAME` as NAME2,e.SKILL
 		from t_employee AS e
 		LEFT JOIN t_bu AS b
 		ON e.BU_ID = b.BU_ID

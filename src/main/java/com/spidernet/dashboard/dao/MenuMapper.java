@@ -23,4 +23,6 @@ public interface MenuMapper {
 
 	int getMaxId();
 
+	List<Menu> menuListByEmp(String empId);
+
 }

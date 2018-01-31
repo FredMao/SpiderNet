@@ -54,4 +54,15 @@
 		where id= #{id}
 		or parent_id = #{id}
 	</update>
+	
+	<select id="menuListByEmp" parameterType="String" resultMap="menuMap">
+           select menu.*
+           from t_employee emp,t_employee_rule_map emp_rule, t_rule rule, t_menu menu,  t_rule_menu rule_menu
+           where emp.ER_NUMBER = emp_rule.ER
+           and emp_rule.RULE_ID = rule.id
+           and rule.id = rule_menu.rule_id
+           and rule_menu.menu_id = menu.id
+           and emp.EMPLOYEE_ID = #{empId}
+           ORDER BY menu.sort
+	</select>
 </mapper>

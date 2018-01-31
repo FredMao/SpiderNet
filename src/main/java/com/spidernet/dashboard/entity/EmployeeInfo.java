@@ -10,6 +10,7 @@ public class EmployeeInfo
     private String buName;
     private String projectName;
     private String trainingName;
+    private String skill;
     
     
     public String getEr()
@@ -84,6 +85,12 @@ public class EmployeeInfo
         super();
         // TODO Auto-generated constructor stub
     }
+	public String getSkill() {
+		return skill;
+	}
+	public void setSkill(String skill) {
+		this.skill = skill;
+	}
     
     
     

@@ -1,6 +1,9 @@
 package com.spidernet.dashboard.service.impl;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -16,10 +19,22 @@ public class MenuServiceImpl implements MenuService{
 	@Resource
     private MenuMapper menuMapper;
 
-
 	@Override
 	public List<Menu> queryMenuList() {
 		List<Menu> list = menuMapper.queryMenuList();
+		if(list.size() == 0){
+			Menu homeMenu = new Menu();
+			homeMenu.setId(0);
+			homeMenu.setName("Home Page");
+			homeMenu.setParentId(-1);
+			homeMenu.setPicUrl("glyphicon glyphicon-home");
+			homeMenu.setRemark("This is <Home Page> Information !");
+			homeMenu.setUrl("#");
+			homeMenu.setValid("Y");
+			homeMenu.setSort(1);
+			addMenu(homeMenu);
+			list.add(homeMenu);
+		}
 		return list;
 	}
 
@@ -32,6 +47,8 @@ public class MenuServiceImpl implements MenuService{
 		} 
 		return sort + 1;
 	}
+	
+	
 
 	@Override
 	public boolean addMenu(Menu menu) {
@@ -87,4 +104,30 @@ public class MenuServiceImpl implements MenuService{
 		return menuMapper.getMaxId();
 	}
 
+	@Override
+	public List<Object> menuList(List<Menu> menu) {
+		List<Object> list = new ArrayList<Object>(); 
+		  for (Menu x : menu) {     
+	          Map<String,Object> mapArr = new LinkedHashMap<String, Object>(); 
+	          mapArr.put("id", x.getId());  
+	          mapArr.put("name", x.getName());
+	          mapArr.put("MenuUrl", x.getUrl());
+	          mapArr.put("picUrl", x.getPicUrl());
+	          mapArr.put("pId", x.getParentId()); 
+	          String pName = getNameById(x.getParentId());
+	          mapArr.put("pName", pName);  
+	          mapArr.put("remark", x.getRemark());
+	          mapArr.put("sort", x.getSort());
+	          list.add(mapArr);  
+	      }     
+	      return list;
+	}
+
+	@Override
+	public List<Object> menuListByEmp(String empId) {
+		List<Menu>  menuList =  menuMapper.menuListByEmp(empId);
+		List<Object>  menuJson = menuList(menuList);
+		
+		return menuJson;
+	}
 }

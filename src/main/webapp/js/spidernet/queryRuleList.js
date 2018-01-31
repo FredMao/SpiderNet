@@ -118,7 +118,7 @@ function loadRuleList(pageState){
 				$("#previousPage").removeAttr("onclick");
 			}
 		}
-	})
+	});
 }
 
 function addRule(){	
@@ -151,7 +151,7 @@ function saveRule(){
 					$("#failureAlert").html('Add failure!').show();
 				}
 			}
-		})
+		});
 	}
 	else
 	{
@@ -174,7 +174,7 @@ function saveRule(){
 					$("#failureAlert").html('Edit failure!').show();
 				}
 			}
-		})
+		});
 	}
 								
 }
@@ -219,7 +219,7 @@ function deleteRule(id){
 						alert("Delete failure!");				
 					}
 				}
-			})
+			});
 			
 		}
 }
@@ -228,10 +228,119 @@ function cancelRule(){
 	$("#successAlert").html("").hide();
 	$("#failureAlert").html("").hide();
 	$("#id").val("");
-        $("#name").val("");
+	$("#name").val("");
 	$("#sort").val("");
 	$("#remark").val("");
 	$('#ruleForm').data('bootstrapValidator').resetForm(true);
+}
+
+var setting = {
+	    check: {
+	        enable: true
+	    },
+	    data: {
+	        simpleData: {
+	            enable: true
+	        }
+	    },
+	    callback:{  
+	        onCheck:onCheck  
+	    } 
+	};
+function getMenu(id){
+	$.ajax({
+		url : path+"/service/menuInfo/showMenu",
+		type : "post",
+		async : true,
+		cache : false,
+		dataType : "json",
+		timeout : 20000,
+		success : function(jsonData) {
+			$.fn.zTree.init($("#treeDemo"), setting, jsonData);	
+			var pid= $("#menuIds").val();
+			if(pid != "" ||pid != null){
+				var zTreeObj = $.fn.zTree.getZTreeObj("treeDemo")  
+			    var zTree = zTreeObj.getCheckedNodes(false);  
+			    for (var i = 0; i < zTree.length; i++) {  
+			        if (pid.indexOf(";" + zTree[i].id + ";") != -1) {  
+			                    zTreeObj.expandNode(zTree[i], true);
+			                    zTreeObj.checkNode(zTree[i], true);                   
+			        }  
+			    }  
+			   onCheck();
+			}			
+		}
+	});
+	
+	
+}
+
+function getCheckNodes(id){	
+	
+	$.ajax({
+		url:path+'/service/rule/queryRuleMenu',
+		dataType:"json",
+		async:true,
+		data:{"id":id},
+		cache:false,
+		type:"post",
+		success:function(ruleMenuList){
+			if(ruleMenuList.length>0){
+				var menuIds = ";";
+				for(var i=0;i<ruleMenuList.length;i++){
+					menuIds+=ruleMenuList[i].menuId + ";";
+				}
+				$("#menuIds").val(menuIds);
+			}
+			
+		}
+	});	
+}
+
+function ruleMenu(id){	
+	$('#menuModal').modal('show');
+	$("#ruleId").val(id);
+	getCheckNodes(id)
+	getMenu(id);	
+}
+
+function onCheck(e,treeId,treeNode){
+    var treeObj=$.fn.zTree.getZTreeObj("treeDemo"),
+    nodes=treeObj.getCheckedNodes(true),
+    v = "";
+    for(var i=0;i<nodes.length;i++){
+    v+=nodes[i].id + ",";
+    }
+    return v;
+};
+
+$("#ruleMenuBtn").click(function(){
+	var ruleId = $("#ruleId").val();
+	var menuIds = onCheck();
+	menuIds = menuIds.substr(0, menuIds.length - 1);	
+	$.ajax({
+		url:path+'/service/rule/addRuleMenu',
+		dataType:"json",
+		async:true,
+		data:{"ruleId":ruleId,"menuIds":menuIds},
+		cache:false,
+		type:"post",
+		timeout : 20000,
+		success:function(resultFlag){
+			if(resultFlag){
+				cancelRuleMenu();
+				alert("Add menu success!");
+				loadRuleList();
+			}else{
+				alert("Add menu failure!");				
+			}
+		}
+	});
+})
+
+function cancelRuleMenu(){
+	$("#ruleId").val("");
+	$("#menuIds").val("");
 }
 
 

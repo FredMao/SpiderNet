@@ -55,7 +55,8 @@ public class TrainPlanServiceImpl implements TrainPlanService {
 		for (TrainPlan trainPlanOb : trainPlanList) {
 			TrainPlanContainId trainPlanContainId = new TrainPlanContainId();
 			int allocationPlanId = trainPlanOb.getAllocationPlanId();
-			String trainTime = trainPlanOb.getTrainTime();
+			String trainTimeStart = trainPlanOb.getTrainTimeStart();
+			String trainTimeEnd = trainPlanOb.getTrainTimeEnd();
 			String trainRoom = trainPlanOb.getTrainRoom();
 			int participants = trainPlanOb.getParticipants();
 			String active = trainPlanOb.getActive();
@@ -68,7 +69,8 @@ public class TrainPlanServiceImpl implements TrainPlanService {
 
 			trainPlanContainId.setActive(active);
 			trainPlanContainId.setAllocationPlanId(allocationPlanId);
-			trainPlanContainId.setTrainTime(trainTime);
+			trainPlanContainId.setTrainTimeStart(trainTimeStart);
+			trainPlanContainId.setTrainTimeEnd(trainTimeEnd);
 			trainPlanContainId.setTrainRoom(trainRoom);
 			trainPlanContainId.setParticipants(participants);
 			trainPlanContainId.setTrainCourseId(trainCourseId);

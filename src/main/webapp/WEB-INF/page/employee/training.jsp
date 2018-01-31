@@ -59,11 +59,16 @@
     <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <script type="text/javascript" src="<%=path %>/js/spidernet/queryTrainningList.js"></script>
     <![endif]-->
 
     <!-- The fav icon -->
     <link rel="shortcut icon" href="<%=path%>/img/favicon.ico">
-
+    <style type="text/css">
+        .bgRed{
+            background-color: #b2dba1;
+        }
+    </style>
 </head>
 
 <body>
@@ -126,7 +131,7 @@
 
                                 <div>
                                     <table id="trainningList"
-                                           class="table table-striped table-bordered">
+                                           class="table table-bordered">
                                         <thead>
                                         <tr>
                                             <!-- <th>编号</th> -->
@@ -186,7 +191,8 @@
                                     <tr>
                                         <th>knowledge point</th>
                                         <th>Child Knowledge</th>
-                                        <th>Date</th>
+                                        <th>StartDate</th>
+                                        <th>EndDate</th>
                                         <th>Location</th>
                                         <th>participants</th>
                                         <th>Actions</th>
@@ -204,6 +210,118 @@
     <!--/fluid-row-->
     <hr>
 
+    <div class="modal fade" id="traningEditMode" tabindex="-1" role="dialog"
+         aria-labelledby="myModalLabel" aria-hidden="true">
+
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="box-header well" data-original-title="">
+                    <h2>
+                        <i class="glyphicon glyphicon-user"></i> Trainning Update
+                    </h2>
+
+                    <div class="box-icon">
+                        <a href="#" class="btn btn-round btn-default  btn-minimize "><i
+                                class="glyphicon glyphicon-chevron-up"></i></a> <a
+                            class="btn btn-round btn-default" href="#" data-dismiss="modal">
+                        <i class="glyphicon glyphicon-remove"></i>
+                    </a>
+                    </div>
+                </div>
+
+
+                <div id="updateListtrainningBox" class="box-content">
+
+                    </br>
+
+                    <div id="updateListsuccessAlert" class="alert alert-success" style="display: none;"></div>
+                    <div id="updateListfailureAlert" class="alert alert-warning" style="display: none;"></div>
+
+                    <div class="form-group">
+                        <div class="group">
+                            <label class="col-sm-2 control-label">Trainning Name</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="updatetrainningName2" id="updatetrainningName2"/>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <label class="col-sm-2 control-label">Tranning Time</label>
+                            <div class="col-md-4">
+                                <div class="input-group date form_datetime col-sm-12"
+                                     data-link-field="dt_set_order_time_input">
+                                    <input class="form-control" id="updatetrainningTime" name="updatetrainningTime" type="text"
+                                           disabled="disabled"
+                                    > <span class="input-group-addon"><span
+                                        class="glyphicon glyphicon-th"></span></span> <input type="hidden"
+                                                                                             id="updatetrainningTime1"
+                                                                                             name="updatetrainningTime1"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    </br></br>
+                    <div class="form-group">
+                        <div class="group">
+                            <label class="col-sm-2 control-label">Address</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="updatelocation" id="udatelocation"/>
+                            </div>
+                        </div>
+                        <div class="group">
+                            <label class="col-sm-2 control-label">Trainer</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="updateteacher" id="updateteacher"/>
+                            </div>
+                        </div>
+                    </div>
+                    </br></br>
+
+
+                    <div class="form-group">
+                        <div class="group">
+                            <label class="col-sm-2 control-label">URL</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="updatetrainningURL" id="updatetrainningURL"/>
+                            </div>
+                        </div>
+                    </div>
+                    </br></br>
+
+                    <div>
+                        <label class="col-lg-2 control-label">Knowledge</label>
+                        <div class="col-lg-4">
+                            <select href="#" class="form-control " name="updateKnowledgePoint"
+                                    data-bv-notempty data-bv-notempty-message="Please select knowledge Points."
+                                    id="updateKnowledgePoint"
+                                    data-bv-group=".group">
+                                <option value="">-- Please Select --</option>
+                            </select>
+                        </div>
+                        <label class="col-lg-2 control-label">SubTopic</label>
+                        <div class="col-lg-4">
+                            <select href="#" class="form-control " name="updateChildKnowledgePoints"
+                                    data-bv-notempty data-bv-notempty-message="Please select Child Knowledge Points."
+                                    id="updateChildKnowledgePoints"
+                                    data-bv-group=".group">
+                                <option value="">-- Please Select --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    </br></br></br>
+                    <div class="center">
+                        <a class="btn btn-success" href="#" onClick="updateTrainning()">
+                            <i class="glyphicon glyphicon-ok icon-white"></i> Confirm</a>
+                        <a class="btn btn-info" href="#" data-dismiss="modal">
+                            <i class="glyphicon glyphicon-remove icon-white"></i> Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div>
 
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
@@ -284,25 +402,21 @@
                     </div>
                     </br></br>
 
-
-                    <div class="center">
-                        <label class="radio-inline"> <input type="radio"
-                                                            name="skillRadio" id="commonCapability" value="option1"
-                                                            checked="checked">
-                            Public Skill
-                        </label> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <label class="radio-inline"> <input type="radio"
-                                                            name="skillRadio" id="proCapability" value="option2">
-                            Private Skill
-                        </label>
-                    </div>
-                    </br>
-
                     <div>
-                        <label class="col-lg-2 control-label">Skills</label>
+                        <label class="col-lg-2 control-label">Knowledge</label>
                         <div class="col-lg-4">
-                            <select href="#" class="form-control " name="skillPoints"
-                                    data-bv-notempty data-bv-notempty-message="Please select skill." id="skillPoints"
+                            <select href="#" class="form-control " name="KnowledgePoint"
+                                    data-bv-notempty data-bv-notempty-message="Please select knowledge Points."
+                                    id="KnowledgePoint"
+                                    data-bv-group=".group">
+                                <option value="">-- Please Select --</option>
+                            </select>
+                        </div>
+                        <label class="col-lg-2 control-label">SubTopic</label>
+                        <div class="col-lg-4">
+                            <select href="#" class="form-control " name="ChildKnowledgePoints"
+                                    data-bv-notempty data-bv-notempty-message="Please select Child Knowledge Points."
+                                    id="ChildKnowledgePoints"
                                     data-bv-group=".group">
                                 <option value="">-- Please Select --</option>
                             </select>
@@ -322,6 +436,7 @@
         <!--/span-->
     </div>
 
+<form id="addTrainPLanForm" method="post">
     <div class="modal fade" id="addTrainingPlanDeatil" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
 
@@ -367,15 +482,15 @@
                         </div>
                     </div>
 
-                    </br></br>
+                    </br></br></br></br>
 
                     <div class="form-group">
                         <div class="group">
-                            <label class="col-sm-2 control-label">Tranning Time</label>
+                            <label class="col-sm-2 control-label">Start Time</label>
                             <div class="col-md-4">
                                 <div class="input-group date form_datetime col-sm-12"
                                      data-link-field="dt_set_order_time_input">
-                                    <input class="form-control" id="addDetailtrainningTime" name="trainningTime"
+                                    <input class="form-control" id="addDetailtrainningTimeStart" name="startTime"
                                            type="text"
                                            disabled="disabled"
                                     > <span class="input-group-addon"><span
@@ -383,6 +498,32 @@
                                                                                              id="addDetailtrainningTime1"
                                                                                              name="trainningTime1"/>
                                 </div>
+                            </div>
+                        </div>
+						<div class="group">
+                            <label class="col-sm-2 control-label">End Time</label>
+                            <div class="col-md-4">
+                                <div class="input-group date form_datetime col-sm-12"
+                                     data-link-field="dt_set_order_time_input">
+                                    <input class="form-control" id="addDetailtrainningTimeEnd" name="endTime"
+                                           type="text"
+                                           disabled="disabled"
+                                    > <span class="input-group-addon"><span
+                                        class="glyphicon glyphicon-th"></span></span> <input type="hidden"
+                                                                                             id="addDetailtrainningTime2"
+                                                                                             name="trainningTime2"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    </br></br></br></br>
+
+                    <div class="form-group">
+                        <div class="group">
+                            <label class="col-sm-2 control-label">Participants</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="addParticipants" id="addParticipants" />
                             </div>
                         </div>
                         <div class="group">
@@ -394,21 +535,13 @@
                         </div>
                     </div>
 
-                    </br></br>
-
-                    <div class="form-group">
-                        <div class="group">
-                            <label class="col-sm-2 control-label">Participants</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="addParticipants" id="addParticipants"/>
-                            </div>
-                        </div>
-                    </div>
-
                     </br></br></br>
+                    <p> </p>
                     <div class="center">
-                        <a class="btn btn-success" href="#" onClick="saveTrainningdetailPlan()">
-                            <i class="glyphicon glyphicon-ok icon-white"></i> Confirm</a>
+                    	<button class="btn btn-success" href="#" onClick="saveTrainningdetailPlan()">
+                    	<i class="glyphicon glyphicon-ok icon-white"></i>Confirm</button>
+                    	
+                   
                         <a class="btn btn-info" href="#" data-dismiss="modal">
                             <i class="glyphicon glyphicon-remove icon-white"></i> Cancel</a>
                     </div>
@@ -416,7 +549,9 @@
             </div>
         </div>
     </div>
+    </form>
 
+<form id="updateTrainPLanForm" method="post">
     <div class="modal fade" id="updateTrainingPlanDeatil" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel" aria-hidden="true">
 
@@ -462,25 +597,51 @@
                         </div>
                     </div>
 
-                    </br></br>
+                    </br></br></br></br>
 
                     <div class="form-group">
                         <div class="group">
-                            <label class="col-sm-2 control-label">Tranning Time</label>
+                            <label class="col-sm-2 control-label">Start Time</label>
                             <div class="col-md-4">
                                 <div class="input-group date form_datetime col-sm-12"
                                      data-link-field="dt_set_order_time_input">
-                                    <input class="form-control" id="updateDetailtrainningTime" name="updateDetailtrainningTime"
+                                    <input class="form-control" id="updateDetailtrainningTimeStart" name="updateDetailtrainningTimeStart"
                                            type="text"
                                            disabled="disabled"
                                     > <span class="input-group-addon"><span
-                                        class="glyphicon glyphicon-th"></span></span> <input type="hidden"
+                                        class="glyphicon glyphicon-th"></。></span> <input type="hidden"
                                                                                              id="updateDetailtrainningTime1"
                                                                                              name="trainningTime1"/>
                                 </div>
                             </div>
                         </div>
+						<div class="group">
+                            <label class="col-sm-2 control-label">End Time</label>
+                            <div class="col-md-4">
+                                <div class="input-group date form_datetime col-sm-12"
+                                     data-link-field="dt_set_order_time_input">
+                                    <input class="form-control" id="updateDetailtrainningTimeEnd" name="updateDetailtrainningTimeEnd"
+                                           type="text"
+                                           disabled="disabled"
+                                    > <span class="input-group-addon"><span
+                                        class="glyphicon glyphicon-th"></span></span> <input type="hidden"
+                                                                                             id="updateDetailtrainningTime2"
+                                                                                             name="trainningTime2"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    </br></br></br></br>
+
+                    <div class="form-group">
                         <div class="group">
+                            <label class="col-sm-2 control-label">Participants</label>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="updateparticipants" id="updateparticipants"/>
+                            </div>
+                        </div>
+                          <div class="group">
                             <label class="col-sm-2 control-label">Address</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="location" id="updatelocation"/>
@@ -489,21 +650,10 @@
                         </div>
                     </div>
 
-                    </br></br>
-
-                    <div class="form-group">
-                        <div class="group">
-                            <label class="col-sm-2 control-label">Participants</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" name="updateparticipants" id="updateparticipants"/>
-                            </div>
-                        </div>
-                    </div>
-
                     </br></br></br>
                     <div class="center">
-                        <a class="btn btn-success" href="#" onClick="updateTrainningdetailPlan()">
-                            <i class="glyphicon glyphicon-ok icon-white"></i> Confirm</a>
+                        <button class="btn btn-success" href="#" onClick="updateTrainningdetailPlan()">
+                    	<i class="glyphicon glyphicon-ok icon-white"></i>Confirm</button>
                         <a class="btn btn-info" href="#" data-dismiss="modal">
                             <i class="glyphicon glyphicon-remove icon-white"></i> Cancel</a>
                     </div>
@@ -511,7 +661,7 @@
             </div>
         </div>
     </div>
-
+</form>
 
     <c:import url="/service/manage/footer"/>
 
