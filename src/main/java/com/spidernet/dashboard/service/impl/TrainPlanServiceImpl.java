@@ -69,13 +69,13 @@ public class TrainPlanServiceImpl implements TrainPlanService {
 
 			trainPlanContainId.setActive(active);
 			trainPlanContainId.setAllocationPlanId(allocationPlanId);
-			trainPlanContainId.setTrainTimeStart(trainTimeStart);
-			trainPlanContainId.setTrainTimeEnd(trainTimeEnd);
-			trainPlanContainId.setTrainRoom(trainRoom);
+			trainPlanContainId.setTrainTimeStart(trainTimeStart == null ? "":trainTimeStart);
+			trainPlanContainId.setTrainTimeEnd(trainTimeEnd == null ? "":trainTimeEnd);
+			trainPlanContainId.setTrainRoom(trainRoom == null ? "":trainRoom);
 			trainPlanContainId.setParticipants(participants);
 			trainPlanContainId.setTrainCourseId(trainCourseId);
-			trainPlanContainId.setParentTrainingName(parentName);
-			trainPlanContainId.setChildTrainName(childName);
+			trainPlanContainId.setParentTrainingName(parentName == null ? "":parentName);
+			trainPlanContainId.setChildTrainName(childName == null ? "":childName);
 			trainPlanContainId.setParentId(parentTrainId);
 			trainPlanContainId.setChildId(childTrainId);
 			trainPlanList2.add(trainPlanContainId);

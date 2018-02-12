@@ -511,7 +511,6 @@ function updateDetailTrainningplanMode(id, childId) {
 
     loadKnowledgePoint(trainingCourceId);
 
-    loadKnowledgePoint();
     loadChildKnowledgePoint(childId);
 
     queryTrainPlanByAllocationId(id);
@@ -557,6 +556,8 @@ function queryTrainPlanByAllocationId(id) {
                 }
             }
             $("#updateDetailtrainningTime").val(result.trainTime);
+            $("#updateDetailtrainningTimeStart").val(result.trainTimeStart);
+            $("#updateDetailtrainningTimeEnd").val(result.trainTimeEnd);
             $("#updatelocation").val(result.trainRoom);
             $("#updateparticipants").val(result.participants);
             $("#updateAllocationPlanId").val(result.allocationPlanId)
