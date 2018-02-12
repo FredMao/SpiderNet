@@ -44,7 +44,7 @@ function loadTrainningList(pageState) {
                     var td7 = $("<td>" + result.data[i].subTopic + "</td>");
                     var td8 = $("<td><a class='btn btn-primary btn-sm' href='javascript:void(0);' onclick=updateTrainningMode('"+result.data[i].trainningId+"','"+result.data[i].knowledgePoint+"')>Edit</a>"
                     		+ "&nbsp&nbsp&nbsp"
-                            + "<a class='btn btn-primary btn-sm' href='javascript:void(0);' onclick=deletedTrainningdetail('"
+                            + "<a class='btn btn-primary btn-sm' href='javascript:void(0);' onclick=DeletedDetailTrainningplanMode('"
                             + result.data[i].trainningId
                             + "')>Deleted</a>"
                             + "</td>");
@@ -165,14 +165,41 @@ function addTrainning() {
         highlightSelected: false,
         emptyIcon: '',
         multiSelect: true,
+        hierarchicalCheck:true,
         onNodeChecked: function (event,node) {
-            var str = $("#knowledgePointList").val();
+/*            var str = $("#knowledgePointList").val();
             if (str.length > 0) {
                 $("#knowledgePointList").val(str + node.knowledgePoint + ',');
             } else {
                 $("#knowledgePointList").val(node.knowledgePoint + ',');
+            }*/
+            function doCheckedNode(node) {
+                var thisDiv = $('#treeview-Knowledge');
+                var parentNode = thisDiv.treeview('getParent', node);
+                if(parentNode && 0 <= parentNode.nodeId) {
+                    console.log(parentNode);
+                    thisDiv.treeview('checkNode', [ parentNode, { silent: true } ]);
+                    doCheckedNode(parentNode);
+                }
             }
+            doCheckedNode(node);
+        },
+        onNodeUnchecked: function (event, node) {
+            function doUnCheckedNode(node) {
+                var thisDiv = $('#treeview-Knowledge');
+                if(node && node.nodes && 0 < node.nodes.length) {
+                    var childNodes = node.nodes;
+                    for(var i = 0, len = childNodes.length; i < len; i++) {
+                        // 取消选中
+                        thisDiv.treeview('uncheckNode', [ childNodes[i].nodeId, { silent: true } ]);
+                        // 递归
+                        doUnCheckedNode(childNodes[i]);
+                    }
+                }
+            }
+            doUnCheckedNode(node);
         }
+
     }).treeview('collapseAll', {
         silent : false
     });
@@ -195,8 +222,13 @@ function saveTrainning() {
     var location = $("#location").val();
     var teacher = $("#teacher").val();
     var trainningURL = $("#trainningURL").val();
-    var knowledgePoint = $("#knowledgePointList").val();
+    /*var knowledgePoint = $("#knowledgePointList").val();*/
     /*var childKnowledgePoints = $("#ChildKnowledgePoints").val();*/
+    var knowledgePointList="";
+    var test=$('#treeview-Knowledge').treeview('getChecked', 'knowledgePoint');
+    for (var i = 0; i<test.length ;i++){
+        knowledgePointList=test[i].knowledgePoint+","+knowledgePointList;
+    }
 
     $.ajax({
         url : path + '/service/trainning/addTrainning',
@@ -208,30 +240,33 @@ function saveTrainning() {
             "location" : location,
             "teacher" : teacher,
             "trainningURL" : trainningURL,
-            "knowledgePoint" : knowledgePoint/*,*/
+            "knowledgePoint" : knowledgePointList/*,*/
             /*"childKnowledgePoints" : childKnowledgePoints*/
         },
         cache : false,
         type : "post",
         success : function(resultFlag) {
             if (resultFlag) {
-                $("#successAlert").html('添加成功').show();
+                $("#successAlert").html('Successfully').show();
                 setTimeout(function() {
                     $("#successAlert").hide();
+                    $("#failureAlert").hide();
                     $("#addtrainningName2").val("");
                     $("#trainningTime").val("");
                     $("#location").val("");
                     $("#teacher").val("");
                     $("#trainningURL").val("");
-                    $("#KnowledgePoint").val();
-                    $("#ChildKnowledgePoints").val();
+                    $("#KnowledgePoint").val("");
+                    $("#ChildKnowledgePoints").val("");
+                    $("#knowledgePointList").val("");
                     $('#myModal').modal('hide');
                 }, 2000);
             } else {
-                $("#failureAlert").html('添加失败').show();
+                $("#failureAlert").html('failed').show();
             }
         }
     })
+    loadTrainningList();
 }
 
 $('#commonCapability').click(function() {
@@ -269,14 +304,14 @@ var globalKnowledgePointList;
 var globalChildKnowledgePointList;
 var globalTreeView;
 
-function loadKnowledgePoint() {
+function loadKnowledgePoint(trainingCourceId) {
     $.ajax({
-        url : path + '/service/knowledge/getKnowledgePointByPid',
+        /*url : path + '/service/knowledge/getKnowledgePointByPid',*/
+        url : path + '/service/trainning/getTrainingKnowledgeById',
         dataType : "json",
         async : false,
         data : {
-            "pid" : "0",
-            "status" : "0",
+            "trainingCourceId":trainingCourceId
         },
         cache : false,
         type : "post",
@@ -360,7 +395,7 @@ function detailTrainningplan(CourceId) {
                         + result[i].childId
                         + "')>Edit</a>"
                         + "&nbsp&nbsp&nbsp"
-                        + "<a class='btn btn-danger btn-xs' href='javascript:void(0);' onclick=deletedTrainningdetailPlan('"
+                        + "<a class='btn btn-danger btn-xs' href='javascript:void(0);' onclick=DetailTrainningDetailplanMode('"
                         + result[i].allocationPlanId
                         + "','"
                         + result[i].TrainCourseId
@@ -387,7 +422,9 @@ function addDetailTrainningplan() {
     $("#addlocation").empty();
     $("#addParticipants").empty();
 
-    loadKnowledgePoint();
+    var trainingCourceId = $("#parentTrainingName").val();
+
+    loadKnowledgePoint(trainingCourceId);
 
     $("#addKnowledgePoint").find("option").remove();
     $("#addKnowledgePoint").append("<option value=''>-- Please Select --</option>");
@@ -445,9 +482,10 @@ function saveTrainningdetailPlan() {
         type : "post",
         success : function(resultFlag) {
             if (resultFlag) {
-                $("#addsuccessAlert").html('添加成功').show();
+                $("#addsuccessAlert").html('Successfully').show();
                 setTimeout(function() {
                     $("#addsuccessAlert").hide();
+                    $("#addfailureAlert").hide();
                     $("#trainingCourceId").val("");
                     $("#addKnowledgePoint").val("");
                     $("#addChildKnowledgePoints").val("");
@@ -458,7 +496,7 @@ function saveTrainningdetailPlan() {
                     $('#addTrainingPlanDeatil').modal('hide');
                 }, 2000);
             } else {
-                $("#addfailureAlert").html('添加失败').show();
+                $("#addfailureAlert").html('failed').show();
             }
         }
     })
@@ -469,7 +507,10 @@ function saveTrainningdetailPlan() {
 
 function updateDetailTrainningplanMode(id, childId) {
 
-    loadKnowledgePoint();
+    var trainingCourceId = $("#parentTrainingName").val();
+
+    loadKnowledgePoint(trainingCourceId);
+
     loadChildKnowledgePoint(childId);
 
     queryTrainPlanByAllocationId(id);
@@ -515,6 +556,8 @@ function queryTrainPlanByAllocationId(id) {
                 }
             }
             $("#updateDetailtrainningTime").val(result.trainTime);
+            $("#updateDetailtrainningTimeStart").val(result.trainTimeStart);
+            $("#updateDetailtrainningTimeEnd").val(result.trainTimeEnd);
             $("#updatelocation").val(result.trainRoom);
             $("#updateparticipants").val(result.participants);
             $("#updateAllocationPlanId").val(result.allocationPlanId)
@@ -571,9 +614,18 @@ function updateTrainningdetailPlan() {
     detailTrainningplan(trainingCourceId);
 }
 
-function deletedTrainningdetailPlan(id) {
+function DetailTrainningDetailplanMode(traningId) {
+
+    $("#traningDetailById").val(traningId);
+
+    $('#delcfmModelByTraningDetail').modal('show');
+}
+
+function deletedTrainningdetailPlan() {
 
     var parentTrainingId = $('#parentTrainingName').val();
+    var id = $('#traningDetailById').val();
+
 
     $.ajax({
         url : path + '/service/TrainingPlan/deleteTrainPlanByAllocationId',
@@ -631,12 +683,42 @@ function queryTrainById(id) {
                 highlightSelected: false,
                 emptyIcon: '',
                 multiSelect: true,
+                hierarchicalCheck:true,
+                onNodeChecked: function (event,node) {
+                    function doCheckedNode(node) {
+                        var thisDiv = $('#update-treeview-Knowledge');
+                        var parentNode = thisDiv.treeview('getParent', node);
+                        if(parentNode && 0 <= parentNode.nodeId) {
+                            console.log(parentNode);
+                            thisDiv.treeview('checkNode', [ parentNode, { silent: true } ]);
+                            doCheckedNode(parentNode);
+                        }
+                    }
+                    doCheckedNode(node);
+                },
+                onNodeUnchecked: function (event, node) {
+                    function doUnCheckedNode(node) {
+                        var thisDiv = $('#update-treeview-Knowledge');
+                        if(node && node.nodes && 0 < node.nodes.length) {
+                            var childNodes = node.nodes;
+                            for(var i = 0, len = childNodes.length; i < len; i++) {
+                                // 取消选中
+                                thisDiv.treeview('uncheckNode', [ childNodes[i].nodeId, { silent: true } ]);
+                                // 递归
+                                doUnCheckedNode(childNodes[i]);
+                            }
+                        }
+                    }
+                    doUnCheckedNode(node);
+                }
             }).treeview('collapseAll', {
                 silent : false
             });
 
         }
     })
+    $("#updatetrainningid2").hide();
+    $("#updateListfailureAlert").hide();
 }
 
 $("#KnowledgePoint").change(
@@ -730,13 +812,13 @@ function updateTrainning() {
     var location = $("#udatelocation").val();
     var teacher = $("#updateteacher").val();
     var trainningURL = $("#updatetrainningURL").val();
-    var knowledgePoint = $('#update-treeview-Knowledge').treeview('getChecked');
+    /*var knowledgePoint = $('#update-treeview-Knowledge').treeview('getChecked');*/
 
     var knowledgePointList="";
+    var test=$('#update-treeview-Knowledge').treeview('getChecked', 'knowledgePoint');
 
-
-    for (var i=0;i<knowledgePoint.length;i++){
-        knowledgePointList=knowledgePoint[i].knowledgePoint+','+knowledgePointList
+    for (var i=0;i<test.length;i++){
+        knowledgePointList=test[i].knowledgePoint+','+knowledgePointList
     }
 
     $.ajax({
@@ -756,9 +838,10 @@ function updateTrainning() {
         type : "post",
         success : function(resultFlag) {
             if (resultFlag) {
-                $("#successAlert").html('添加成功').show();
+                $("#updateListsuccessAlert").html('Successfully').show();
                 setTimeout(function() {
                     $("#updateListsuccessAlert").hide();
+                    $("#updateListfailureAlert").hide();
                     $("#updatetrainningName2").val("");
                     $("#updatetrainningTime").val("");
                     $("#udatelocation").val("");
@@ -768,16 +851,25 @@ function updateTrainning() {
                     $('#traningEditMode').modal('hide');
                 }, 2000);
             } else {
-                $("#updateListfailureAlert").html('添加失败').show();
+                $("#updateListfailureAlert").html('failed').show();
             }
         }
     })
+    loadTrainningList();
 }
 
-function deletedTrainningdetail(id) {
+function DeletedDetailTrainningplanMode(traningId) {
+
+    $("#traningById").val(traningId);
+
+    $('#delcfmModelByTraning').modal('show');
+}
+
+function deletedTrainningdetail() {
 
 //  var parentTrainingId = $('#parentTrainingName').val();
 
+    var id = $('#traningById').val();
   $.ajax({
       url : path + '/service/trainning/deleteTrainingId',
       dataType : "json",
@@ -788,8 +880,10 @@ function deletedTrainningdetail(id) {
       cache : false,
       type : "post",
       success : function(resultFlag) {
+          $("#traningById").val("");
       }
   })
 
-  loadTrainningList(pageState);
+  /*loadTrainningList(pageState);*/
+    loadTrainningList();
 }

@@ -176,11 +176,18 @@ public class KnowledgePointController {
 			List<KnowledgePoint> list = knowledgePointService.queryKnowledgePointByPid(point);
 
 			String[] knowledgePointList =null;
+			String[] childKnowledgePointList =null;
 
 			Trainning training = trainningService.queryTrainingById(trainningId);
 			if(!("".equals(trainningId)||training ==null)){
-			String test= training.getKnowledgePoint();
-			knowledgePointList= test.substring(0,test.length()-1).split(",");
+				String test= training.getKnowledgePoint();
+				String test1= training.getSubTopic();
+				if (test!=null &&!test.equals("")){
+					knowledgePointList= test.substring(0,test.length()-1).split(",");
+				}
+				if (test1!=null &&!test1.equals("")){
+					childKnowledgePointList= test1.substring(0,test1.length()-1).split(",");
+				}
 			}
 			for (int i=0; i<list.size();i++) {
 
@@ -199,9 +206,9 @@ public class KnowledgePointController {
 					childNodeDTO.setKnowledgePoint(childKnowledgePointlist.get(j).getKnowledgePointId());
 					childNodeDTO.setText(childKnowledgePointlist.get(j).getPointTitle());
 
-					if(knowledgePointList !=null){
+					if(childKnowledgePointList !=null){
 
-						for (String knowledgePoint:knowledgePointList){
+						for (String knowledgePoint:childKnowledgePointList){
 							if(knowledgePoint.equals(childKnowledgePointlist.get(j).getKnowledgePointId())){
 								Map map = new HashMap();
 								map.put("checked", true);

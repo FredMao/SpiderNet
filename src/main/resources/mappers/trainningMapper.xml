@@ -95,7 +95,8 @@
 		LOCATION=#{location},
 		TEACHER=#{teacher},
 		URL=#{url},
-		KNOWLEDGE_POINT=#{knowledgePoint}
+		KNOWLEDGE_POINT=#{knowledgePoint},
+		SUB_TOPIC=#{SubTopic}
 		WHERE TRAINING_ID = #{trainningId}
 	</update>
 
