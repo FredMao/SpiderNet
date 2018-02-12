@@ -1,5 +1,6 @@
 package com.spidernet.dashboard.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,16 +9,14 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.spidernet.dashboard.entity.*;
+import com.spidernet.dashboard.service.KnowledgePointService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.spidernet.dashboard.entity.CapabilityTraining;
-import com.spidernet.dashboard.entity.Employee;
-import com.spidernet.dashboard.entity.Trainning;
-import com.spidernet.dashboard.entity.TrainningPageCondition;
 import com.spidernet.dashboard.service.CapabilityTrainingService;
 import com.spidernet.dashboard.service.TrainningService;
 import com.spidernet.util.Utils;
@@ -27,6 +26,9 @@ import com.spidernet.util.Utils;
 public class TrainningController {
 	@Resource
 	TrainningService trainningService;
+
+	@Resource
+	KnowledgePointService knowledgePointService;
 
 	@Resource
 	CapabilityTrainingService capabilityTrainingService;
@@ -115,7 +117,20 @@ public class TrainningController {
 		String trainningURL = request.getParameter("trainningURL");
 		String status = "0";
 		String knowledgePoint = request.getParameter("knowledgePoint");
-		String childKnowledgePoints = request.getParameter("childKnowledgePoints");
+		/*String childKnowledgePoints = request.getParameter("childKnowledgePoints");*/
+		String knowledgePointList="";
+		String childKnowledgePointList="";
+
+		String[] list =knowledgePoint.substring(0,knowledgePoint.length()-1).split(",");
+		for (int i = 0 ;i<list.length ; i++){
+			KnowledgePoint kp = knowledgePointService.queryKnowledgePointById(list[i]);
+			if (kp.getPid().equals("0"))
+			{
+				knowledgePointList=knowledgePointList+list[i]+",";
+			}else{
+				childKnowledgePointList=childKnowledgePointList+list[i]+",";
+			}
+		}
 
 		Trainning trainning = new Trainning();
 
@@ -126,8 +141,8 @@ public class TrainningController {
 		trainning.setTeacher(teacher);
 		trainning.setUrl(trainningURL);
 		trainning.setStatus(status);
-		trainning.setKnowledgePoint(knowledgePoint);
-		trainning.setSubTopic(childKnowledgePoints);
+		trainning.setKnowledgePoint(knowledgePointList);
+		trainning.setSubTopic(childKnowledgePointList);
 
 		boolean resultFlag = trainningService.addTraining(trainning);
 
@@ -174,6 +189,19 @@ public class TrainningController {
 		String status = "0";
 		String knowledgePoint = request.getParameter("knowledgePoint");
 
+		String knowledgePointList="";
+		String childKnowledgePointList="";
+
+		String[] list =knowledgePoint.substring(0,knowledgePoint.length()-1).split(",");
+		for (int i = 0 ;i<list.length ; i++){
+			KnowledgePoint kp = knowledgePointService.queryKnowledgePointById(list[i]);
+			if (kp.getPid().equals("0"))
+			{
+				knowledgePointList=knowledgePointList+list[i]+",";
+			}else{
+				childKnowledgePointList=childKnowledgePointList+list[i]+",";
+			}
+		}
 		Trainning trainning = new Trainning();
 
 		trainning.setTrainningId(trainningId);
@@ -183,7 +211,8 @@ public class TrainningController {
 		trainning.setTeacher(teacher);
 		trainning.setUrl(trainningURL);
 		trainning.setStatus(status);
-		trainning.setKnowledgePoint(knowledgePoint);
+		trainning.setKnowledgePoint(knowledgePointList);
+		trainning.setSubTopic(childKnowledgePointList);
 
 		boolean resultFlag = trainningService.updateTraining(trainning);
 
@@ -198,5 +227,19 @@ public class TrainningController {
 			return true;
 		}
 		return false;
+	}
+
+	@RequestMapping("/getTrainingKnowledgeById")
+	@ResponseBody
+	public Object getTrainingKnowledgeById(final HttpServletRequest request, final HttpServletResponse response) {
+		String trainingCourceId = request.getParameter("trainingCourceId");
+		Trainning training = trainningService.queryTrainingById(trainingCourceId);
+		String[] knowledgePointId =training.getKnowledgePoint().substring(0,training.getKnowledgePoint().length()-1).split(",");
+		List<KnowledgePoint> list = new ArrayList<KnowledgePoint>();
+		for (String id :knowledgePointId) {
+			KnowledgePoint knowledgePoint = knowledgePointService.queryKnowledgePointById(id);
+			list.add(knowledgePoint);
+		}
+		return list;
 	}
 }

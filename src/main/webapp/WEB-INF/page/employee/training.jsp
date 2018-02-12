@@ -193,6 +193,26 @@
         <!--/#content.col-md-0-->
     </div>
     <!--/fluid-row-->
+
+    <div class="modal fade" id="delcfmModelByTraning">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete it?</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="traningById"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a  onclick="deletedTrainningdetail()" class="btn btn-success" data-dismiss="modal">Confirm</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <hr>
 
     <div class="modal fade" id="traningEditMode" tabindex="-1" role="dialog"
@@ -205,7 +225,6 @@
                     <h2>
                         <i class="glyphicon glyphicon-user"></i> Trainning Update
                     </h2>
-
                     <div class="box-icon">
                         <a href="#" class="btn btn-round btn-default  btn-minimize "><i
                                 class="glyphicon glyphicon-chevron-up"></i></a> <a
@@ -214,15 +233,11 @@
                     </a>
                     </div>
                 </div>
-
-
                 <div id="updateListtrainningBox" class="box-content">
-
-                    </br>
 
                     <div id="updateListsuccessAlert" class="alert alert-success" style="display: none;"></div>
                     <div id="updateListfailureAlert" class="alert alert-warning" style="display: none;"></div>
-
+                    </br></br>
                     <div class="form-group">
                         <div class="group">
                             <label class="col-sm-2 control-label">Trainning Name</label>
@@ -263,8 +278,6 @@
                         </div>
                     </div>
                     </br></br>
-
-
                     <div class="form-group">
                         <div class="group">
                             <label class="col-sm-2 control-label">URL</label>
@@ -306,7 +319,6 @@
                     <h2>
                         <i class="glyphicon glyphicon-user"></i> Trainning Information
                     </h2>
-
                     <div class="box-icon">
                         <a href="#" class="btn btn-round btn-default  btn-minimize "><i
                                 class="glyphicon glyphicon-chevron-up"></i></a> <a
@@ -315,15 +327,11 @@
                     </a>
                     </div>
                 </div>
-
-
-                <div id="trainningBox" class="box-content">
-
+                <br id="trainningBox" class="box-content">
                     </br>
-
                     <div id="successAlert" class="alert alert-success" style="display: none;"></div>
                     <div id="failureAlert" class="alert alert-warning" style="display: none;"></div>
-
+                </br>
                     <div class="form-group">
                         <div class="group">
                             <label class="col-sm-2 control-label">Trainning Name</label>
@@ -378,7 +386,7 @@
                     <div>
                         <label class="col-lg-2 control-label">Knowledge</label>
                         <div class="col-sm-10">
-                            <div id="treeview-Knowledge" style="height: 400px;overflow-y :scroll;"></div>
+                            <div id="treeview-Knowledge" style="height: 300px;overflow-y :scroll;"></div>
                             <input type="hidden" name="knowledgePointList" id="knowledgePointList"/>
                         </div>
                     </div>
@@ -510,6 +518,25 @@
         </div>
     </div>
     </form>
+
+    <div class="modal fade" id="delcfmModelByTraningDetail">
+        <div class="modal-dialog">
+            <div class="modal-content message_align">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Message</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete it?</p>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" id="traningDetailById"/>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a  onclick="deletedTrainningdetailPlan()" class="btn btn-success" data-dismiss="modal">Confirm</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
 <form id="updateTrainPLanForm" method="post">
     <div class="modal fade" id="updateTrainingPlanDeatil" tabindex="-1" role="dialog"
