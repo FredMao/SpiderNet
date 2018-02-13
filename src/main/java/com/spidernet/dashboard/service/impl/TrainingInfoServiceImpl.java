@@ -76,5 +76,12 @@ public class TrainingInfoServiceImpl implements TrainingInfoService
 		List<TrainingInfo> listE=trainingInfoMapper.queryEmpPassedTrainingsDetailInfoByManyConditions(erId,trainingName);
 		return listE;
 	}
+
+	@Override
+	public List<TrainingInfo> queryEmpUncompletedTrainingsDetailInfoByManyConditions(String erId, String trainingName) {
+		// TODO Auto-generated method stub
+		List<TrainingInfo> listE=trainingInfoMapper.queryEmpUncompletedTrainingsDetailInfoByManyConditions(erId,trainingName);
+		return listE;
+	}
     
 }

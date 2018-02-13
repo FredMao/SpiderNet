@@ -187,9 +187,12 @@ public class PersonalTrainningDetlController
         
         String trainingName = request.getParameter("trainingName");
         
-        String trainingId = trainningService.queryTrainingByName(trainingName).get(0).getTrainningId();
+        boolean addResultFlag;
         
-        for(int i = 0; i < empArray.length; i++){
+        String trainingId = trainningService.queryTrainingByName(trainingName).get(0).getTrainningId();
+        if(empArray!=null) {
+        
+          for(int i = 0; i < empArray.length; i++){
             
             employeeId = employeeService.fetchByErNumber(empArray[i]).getEmployeeId();
             
@@ -207,7 +210,11 @@ public class PersonalTrainningDetlController
             personalTrainningList.add(personalTrainning);
         }
         
-        boolean addResultFlag = personalTrainningService.addPersonalTrainning(personalTrainningList);
+         addResultFlag = personalTrainningService.addPersonalTrainning(personalTrainningList);
+        }
+        else {
+        	addResultFlag =false;	
+        } 
         
         return addResultFlag;
     }

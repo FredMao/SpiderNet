@@ -94,6 +94,13 @@ public class EmployeeController {
     {
         return "employee/batchAddTraining";
     }
+    
+    @RequestMapping("/trainingPassedList")
+    public String trainingPassedList(final HttpServletRequest request,
+            final HttpServletResponse response)
+    {
+        return "employee/trainingPassedList";
+    }
 
     @RequestMapping("/queryEmpInfo")
     @ResponseBody

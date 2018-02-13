@@ -181,7 +181,7 @@
 													<th>English Name</th>
 													<th>Delivery Department</th>
 													<th>Project</th>
-													<th>Training Name</th>
+													<th>All Training Names</th>
 													<th>Actions</th>
 												</tr>
 											</thead>
@@ -243,9 +243,11 @@
 						<thead>
 							<tr>
 								<th>Er</th>
-								<th>Hr</th>
-								<th>Chinese Name</th>
+								<th>English Name</th>
+								<th>Delivery Department</th>
 								<th>Uncompleted Training Name</th>
+								<th>Training Knowledge Point</th>
+								<th>Sub knowledge Point</th>
 								<th colspan="2">Actions</th>
 							</tr>
 						</thead>

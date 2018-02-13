@@ -95,9 +95,19 @@
 
 
 									<div class="form-group">
+									    <div class="group">
+											<label class="col-lg-2 control-label">Delivery
+												Department</label>
+											<div class="col-lg-3">
+												<select id="Bu" class="selectpicker"
+													data-live-search="true">
+												</select>
+											</div>
+										</div>
+										
 										<div class="group">
-											<label class="col-lg-2 control-label">Training Name</label>
-											<div class="col-lg-4">
+											<label class="col-lg-3 control-label">Training Name</label>
+											<div class="col-lg-3">
 												<select id="TrainingName" class="selectpicker"
 													data-live-search="true">
 												</select>
@@ -126,7 +136,6 @@
 											class="table table-striped table-bordered">
 											<thead>
 												<tr>
-													
 													<th>Er</th>
 													<th>Hr</th>
 													<th>Chinese Name</th>
@@ -134,6 +143,7 @@
 													<th>Delivery Department</th>
 													<th>Project</th>
 													<th>Passed Training Name</th>
+													<th>Action</th>
 												</tr>
 											</thead>
 										</table>
@@ -156,6 +166,54 @@
 								</form>
 
 							</div>
+							<div class="modal fade" id="viewModel" tabindex="-1" role="dialog"
+			                      aria-labelledby="myModalLabel" aria-hidden="true">
+
+
+			                   <div class="modal-dialog">
+				                 <div class="modal-content">
+					                <div class="box-header well" data-original-title="">
+						                <h2>
+							              <i class="glyphicon glyphicon-user"></i>Employee Passed Training Detail Information
+						                </h2>
+
+						        <div class="box-icon">
+							       <a href="#" class="btn btn-round btn-default  btn-minimize "><i
+							 	   class="glyphicon glyphicon-chevron-up"></i></a> <a
+								   class="btn btn-round btn-default" href="#" data-dismiss="modal">
+								<i class="glyphicon glyphicon-remove"></i>
+							</a>
+						</div>
+					</div>
+					
+					<div id="knowledgeBox" class="box-content">
+
+						<div id="successAlert" class="alert alert-success" style="display: none;"></div>
+						<div id="failureAlert" class="alert alert-warning" style="display: none;"></div>
+						</br></br>
+						<div class="form-group">
+							<div>
+					 <table id="viewList" class="table table-bordered" data-show-refresh="true">
+						<thead>
+							<tr>
+								<th>Er</th>
+								<th>Chinese Name</th>
+								<th>English Name</th>
+								<th>Delivery Department</th>
+								<th>Passed Training Name</th>
+								<th>Training Knowledge Point</th>
+								<th>Sub knowledge Point</th>
+							</tr>
+						</thead>
+					</table>
+				</div>
+					</div>
+				</div>
+			</div>
+			<!--/span-->
+		</div>
+			<!--/span-->
+		</div>
 						</div>
 					</div>
 				</div>

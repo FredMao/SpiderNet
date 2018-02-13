@@ -3,6 +3,8 @@ $(function(){
 	
 	loadTrainningPassedList();
 	
+	loadBu();
+	
 	loadTrainingName();
 	
 });
@@ -27,6 +29,42 @@ function loadTrainingName(){
 	})
 }
 
+function checkPrivilege(){
+	
+	var privilegeState = $("#privilegeState").val();
+	
+	var buId = $("#Bu").val();
+	
+	if(privilegeState=='false'){
+		//$("#bu option[value='']").removeAttr("selected");
+		//$("#bu option[value='"+buId+"']").attr("select","selected");
+		$("#Bu").val(buId);
+		$("#Bu").attr("disabled","disabled");
+	}
+	
+}
+
+function loadBu(){
+	
+	$.ajax({
+		url:path+'/service/bu/queryBu',
+		dataType:"json",
+		async:true,
+		cache:false,
+		type:"post",
+		success:function(listB){
+			$("#Bu").append("<option value=''>-- please select delivery apartment --</option>");
+			for(var i = 0;i<listB.length;i++){
+				$("#Bu").append("<option value='"+listB[i].buId+"'>"+listB[i].buName+"</option>");
+			}
+			checkPrivilege();
+			
+			loadTrainningPassedList();
+		}
+	})
+}
+
+
 function showSelected(){
 	var er = "";
 	for(var i=0; i<10; i++){
@@ -43,6 +81,7 @@ function showSelected(){
 function loadTrainningPassedList(pageState){
 	
 	var trainingName = $("#TrainingName").val();
+	var buId = $("#Bu").val();
 
 	var pageState = pageState;
 	
@@ -50,7 +89,7 @@ function loadTrainningPassedList(pageState){
 		url:path+"/service/employeeInfo/trainingPassedList",
 		dataType:"json",
 		async:true,
-		data:{"pageState":pageState,"trainingName":trainingName},
+		data:{"pageState":pageState,"trainingName":trainingName,"buId":buId},
 		cache:false,
 		type:"post",
 		success:function(result){
@@ -61,13 +100,10 @@ function loadTrainningPassedList(pageState){
 			
 			for (var i = 0; i < result.data.length; i++) {
 				var tr = $("<tr></tr>");
-				tr.appendTo(tbody);
-
-				
+				tr.appendTo(tbody);				
 				var td1 = $("<td id='td"+i+"'>"
 						+ result.data[i].er
 						+ "</td>");
-
 				var td2 = $("<td>"
 						+ result.data[i].hr
 						+ "</td>");
@@ -86,6 +122,7 @@ function loadTrainningPassedList(pageState){
 				var td7 = $("<td>"
 						+ result.data[i].trainingName
 						+ "</td>");
+				var td8 = $('<td ><a class="btn btn-info" href="#" style="height: 25px; width: 70px;  padding-top: 5px; padding-left: 8px; font-size: 11px;" onclick="viewEmpPassedTrainingsDetailInfo(this)"><i class="glyphicon glyphicon-eye-open icon-white">View</i></a></td>');
 				td1.appendTo(tr);
 				td2.appendTo(tr);
 				td3.appendTo(tr);
@@ -93,6 +130,7 @@ function loadTrainningPassedList(pageState){
 				td5.appendTo(tr);
 				td6.appendTo(tr);
 				td7.appendTo(tr);
+				td8.appendTo(tr);
 				
 			}
 			$("#trainningPassedList").append("</tbdoy>");
@@ -111,10 +149,66 @@ function loadTrainningPassedList(pageState){
 				$("#previousPage").removeAttr("onclick");
 			}
 			
-//			showSelected();
 		}
 	})
 	
+}
+
+function viewEmpPassedTrainingsDetailInfo(tar)
+{
+var erId = $(tar).parent().parent().find('td:eq(0)').text();
+var trName = $(tar).parent().parent().find('td:eq(6)').text();
+var url = path+"/service/employeeInfo/viewEmpPassedTrainingsDetailInfo";
+    $.ajax({
+        type: "post",
+        url: url,
+        data: {"erId":erId,"trName":trName},
+        cache: false,
+        async : false,
+        dataType: "json",
+        success: function (result)
+        {
+        	$("#viewList tbody").remove();
+			
+			var tbody = $("<tbody>");
+			tbody.appendTo($("#viewList"));
+			
+			for (var i = 0; i < result.data.length; i++) {
+				var tr = $("<tr></tr>");
+				tr.appendTo(tbody);
+				var td1 = $("<td id='td"+i+"'>"
+						+ result.data[i].er
+						+ "</td>");
+				var td2 = $("<td>"
+						+ result.data[i].name
+						+ "</td>");
+				var td3 = $("<td>"
+						+ result.data[i].eName
+						+ "</td>");
+				var td4 = $("<td>"
+						+ result.data[i].buName
+						+ "</td>");
+				var td5 = $("<td>"
+						+ result.data[i].trainingName
+						+ "</td>");
+				var td6 = $("<td>"
+						+ result.data[i].knowledgePoint
+						+ "</td>");
+				var td7 = $("<td>"
+						+ result.data[i].subKnowledgePoint
+						+ "</td>");
+				td1.appendTo(tr);
+				td2.appendTo(tr);
+				td3.appendTo(tr);
+				td4.appendTo(tr);
+				td5.appendTo(tr);
+				td6.appendTo(tr);
+				td7.appendTo(tr);
+			}
+			$("#viewList").append("</tbdoy>");	
+        }
+     });
+    $("#viewModel").modal('show');
 }
 
 function addTrainning(){
