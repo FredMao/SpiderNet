@@ -26,4 +26,6 @@ public interface TrainingInfoMapper
 
 	List<TrainingInfo> queryEmpPassedTrainingsDetailInfoByManyConditions(String erId, String trainingName);
 
+	List<TrainingInfo> queryEmpUncompletedTrainingsDetailInfoByManyConditions(String erId, String trainingName);
+
 }

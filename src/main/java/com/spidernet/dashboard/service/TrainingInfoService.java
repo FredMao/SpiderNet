@@ -24,6 +24,10 @@ public interface TrainingInfoService
 	List<TrainingInfo> queryEmpPassedTrainingsDetailInfoByManyConditions(String erId, String trainingName);
 
 	List<TrainingInfo> queryEmpUncompletedTrainingsDetailInfo(String erId);
+
+	List<TrainingInfo> queryEmpUncompletedTrainingsDetailInfoByManyConditions(String erId, String trainingName);
+
+
        
 
 }

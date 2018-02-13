@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.spidernet.dashboard.entity.EmpPageCondition;
 import com.spidernet.dashboard.entity.EmployeeInfo;
 import com.spidernet.dashboard.entity.PageCondition;
 import com.spidernet.dashboard.entity.TrainingInfo;
@@ -28,4 +29,7 @@ public interface EmployeeInfoMapper
 	String queryRuleByEr(String er);
 	
 	int updateRule(@Param("ruleId")String ruleId,@Param("er") String er);
+	
+	List<String> queryPassedTrainingPersonList(EmpPageCondition empPageCondition);
+	
 }

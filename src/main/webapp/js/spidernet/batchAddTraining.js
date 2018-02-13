@@ -84,13 +84,14 @@ $("#TrainingName").change(function(){
 function addEmployee(){
 	var option =document.all("checkbox");
 	if (option!=null){
-	for(var i=0; i<10; i++){   
+      var length=option.length;
+	  for(var i=0; i<length; i++){   
 		er = $("#td"+i+"").text();
-		if(option[i].checked==true && $.inArray(er, empArray) == -1){
+		if(option[i].checked && $.inArray(er, empArray) == -1){
 			empArray.push(er);
 		}
 		
-		if(option[i].checked!=true && $.inArray(er, empArray) != -1){
+		if(!option[i].checked && $.inArray(er, empArray) != -1){
 			empArray.splice(jQuery.inArray(er,empArray),1); 
 		}
 	}
@@ -216,7 +217,8 @@ function loadEmpList(pageState){
 				var td8 = $("<td>"
 						+ result.trainingNames[i]
 						+ "</td>");
-				var td9 = $('<td ><a class="btn btn-info" href="#" style="height: 25px; width: 55px;  padding-top: 5px; padding-left: 8px; font-size: 11px;" id = '+result.data[i].er+' onclick="ViewTrainings(this)"><i class="glyphicon glyphicon-edit icon-white">Edit</i></a></td>');
+//				var td9 = $('<td ><a class="btn btn-info" href="#" style="height: 25px; width: 55px;  padding-top: 5px; padding-left: 8px; font-size: 11px;" id = '+result.data[i].er+' onclick="ViewTrainings(this)"><i class="glyphicon glyphicon-edit icon-white">Edit</i></a></td>');
+				var td9 = $('<td ><a class="btn btn-info" href="#" style="height: 25px; width: 55px;  padding-top: 5px; padding-left: 8px; font-size: 11px;" onclick="ViewTrainings(this)"><i class="glyphicon glyphicon-edit icon-white">Edit</i></a></td>');
 				td1.appendTo(tr);
 				td2.appendTo(tr);
 				td3.appendTo(tr);
@@ -297,12 +299,14 @@ function loadBu(){
 function ViewTrainings(tar)
 {
 
-var erId = tar.id;
+//var erId = tar.id;
+  var erId = $(tar).parent().parent().find('td:eq(1)').text();
+  var trName = $(tar).parent().parent().find('td:eq(7)').text();
 var url = path+"/service/employeeInfo/viewTrainings";
     $.ajax({
         type: "post",
         url: url,
-        data: {'erId':erId},
+        data: {'erId':erId,'trName':trName},
         cache: false,
         async : false,
         dataType: "json",
@@ -320,20 +324,29 @@ var url = path+"/service/employeeInfo/viewTrainings";
 						+ result.data[i].er
 						+ "</td>");
 				var td2 = $("<td>"
-						+ result.data[i].hr
+						+ result.data[i].eName
 						+ "</td>");
+				
 				var td3 = $("<td>"
-						+ result.data[i].name
-						+ "</td>");
-				var td4 = $("<td>"
 						+ result.data[i].buName
 						+ "</td>");
-				var td5 = $('<td ><a class="btn btn-info" href="#" style="height: 25px; width: 55px;  padding-top: 5px; padding-left: 8px; font-size: 11px;"  onclick="ActionsTrainings(this,1)"><i class="glyphicon glyphicon-edit icon-white">Pass</i></a><td ><a class="btn btn-info" href="#" style="height: 25px; width: 55px;  padding-top: 5px; padding-left: 8px; font-size: 11px;"  onclick="ActionsTrainings(this,2)"><i class="glyphicon glyphicon-edit icon-white">Delete</i></a></td>');
+				var td4 = $("<td>"
+						+ result.data[i].trainingName
+						+ "</td>");
+				var td5 = $("<td>"
+						+ result.data[i].knowledgePoint
+						+ "</td>");
+				var td6 = $("<td>"
+						+ result.data[i].subKnowledgePoint
+						+ "</td>");
+				var td7 = $('<td ><a class="btn btn-info" href="#" style="height: 25px; width: 72px;  padding-top: 5px; padding-left: 8px; font-size: 11px;"  onclick="ActionsTrainings(this,1)"><i class="glyphicon glyphicon-ok-sign icon-white">Pass</i></a><td ><a class="btn btn-info" href="#" style="height: 25px; width: 72px;  padding-top: 5px; padding-left: 8px; font-size: 11px;"  onclick="ActionsTrainings(this,2)"><i class="glyphicon glyphicon-remove-sign icon-white">Delete</i></a></td>');
 				td1.appendTo(tr);
 				td2.appendTo(tr);
 				td3.appendTo(tr);
 				td4.appendTo(tr);
 				td5.appendTo(tr);
+				td6.appendTo(tr);
+				td7.appendTo(tr);
 			}
 			$("#editList").append("</tbdoy>");	
         }
@@ -362,5 +375,5 @@ $.ajax({
 		}
 	}
 })
-	
+
 }
