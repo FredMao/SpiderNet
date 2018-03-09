@@ -1,5 +1,6 @@
 package com.spidernet.dashboard.controller;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -120,17 +121,19 @@ public class TrainningController {
 		/*String childKnowledgePoints = request.getParameter("childKnowledgePoints");*/
 		String knowledgePointList="";
 		String childKnowledgePointList="";
-
-		String[] list =knowledgePoint.substring(0,knowledgePoint.length()-1).split(",");
-		for (int i = 0 ;i<list.length ; i++){
-			KnowledgePoint kp = knowledgePointService.queryKnowledgePointById(list[i]);
-			if (kp.getPid().equals("0"))
-			{
-				knowledgePointList=knowledgePointList+list[i]+",";
-			}else{
-				childKnowledgePointList=childKnowledgePointList+list[i]+",";
-			}
+		if(knowledgePoint.length()>10){
+		    String[] list =knowledgePoint.substring(0,knowledgePoint.length()-1).split(",");
+	        for (int i = 0 ;i<list.length ; i++){
+	            KnowledgePoint kp = knowledgePointService.queryKnowledgePointById(list[i]);
+	            if (kp.getPid().equals("0"))
+	            {
+	                knowledgePointList=knowledgePointList+list[i]+",";
+	            }else{
+	                childKnowledgePointList=childKnowledgePointList+list[i]+",";
+	            }
+	        }
 		}
+		
 
 		Trainning trainning = new Trainning();
 
@@ -143,7 +146,7 @@ public class TrainningController {
 		trainning.setStatus(status);
 		trainning.setKnowledgePoint(knowledgePointList);
 		trainning.setSubTopic(childKnowledgePointList);
-
+		trainning.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		boolean resultFlag = trainningService.addTraining(trainning);
 
 		return (resultFlag);
@@ -166,6 +169,14 @@ public class TrainningController {
 
 		return trainingList;
 	}
+	@RequestMapping("/queryTrainingPlanName")
+    @ResponseBody
+    public Object queryTrainingPlanName(final HttpServletRequest request, final HttpServletResponse response) {
+	    String pointId = request.getParameter("pointId");
+        List<Trainning> trainingList = trainningService.queryTrainingPlanName(pointId);
+
+        return trainingList;
+    }
 
 	@RequestMapping("/queryTrainingId")
 	@ResponseBody
@@ -191,17 +202,19 @@ public class TrainningController {
 
 		String knowledgePointList="";
 		String childKnowledgePointList="";
-
-		String[] list =knowledgePoint.substring(0,knowledgePoint.length()-1).split(",");
-		for (int i = 0 ;i<list.length ; i++){
-			KnowledgePoint kp = knowledgePointService.queryKnowledgePointById(list[i]);
-			if (kp.getPid().equals("0"))
-			{
-				knowledgePointList=knowledgePointList+list[i]+",";
-			}else{
-				childKnowledgePointList=childKnowledgePointList+list[i]+",";
-			}
+		if(knowledgePoint.length()>10){
+		    String[] list =knowledgePoint.substring(0,knowledgePoint.length()-1).split(",");
+	        for (int i = 0 ;i<list.length ; i++){
+	            KnowledgePoint kp = knowledgePointService.queryKnowledgePointById(list[i]);
+	            if (kp.getPid().equals("0"))
+	            {
+	                knowledgePointList=knowledgePointList+list[i]+",";
+	            }else{
+	                childKnowledgePointList=childKnowledgePointList+list[i]+",";
+	            }
+	        }
 		}
+		
 		Trainning trainning = new Trainning();
 
 		trainning.setTrainningId(trainningId);

@@ -4,7 +4,12 @@ $(function() {
     dateType();
 
 });
-
+function AssginTrainningplanMode(id){
+	window.location.href=path+"/service/employee/assignTraining?trainingId="+id;
+}
+function AssignTrainingPlanMode(planId,trainingId,pointId){
+	window.location.href=path+"/service/employee/assignPlanTraining?trainingId="+trainingId+"&planTrainingId="+planId+"&pointId="+pointId;
+}
 function loadTrainningList(pageState) {
 
     var trainningName = $("#trainningName").val();
@@ -37,9 +42,11 @@ function loadTrainningList(pageState) {
 
                     var td2 = $("<td>" + result.data[i].courseName
                         + "</td>");
-                    var td3 = $("<td>" + result.data[i].time + "</td>");
+                    var targetDate = result.data[i].time;
+                    var splitTarget = targetDate.split(" ");
+                    var td3 = $("<td>" + splitTarget[0] + "</td>");
                     var td4 = $("<td>" + result.data[i].location + "</td>");
-                    var td5 = $("<td>" + result.data[i].teacher + "</td>");
+                    //var td5 = $("<td>" + result.data[i].teacher + "</td>");
                     var td6 = $("<td>" + result.data[i].knowledgePoint + "</td>");
                     var td7 = $("<td>" + result.data[i].subTopic + "</td>");
                     var td8 = $("<td><a class='btn btn-primary btn-sm' href='javascript:void(0);' onclick=updateTrainningMode('"+result.data[i].trainningId+"','"+result.data[i].knowledgePoint+"')>Edit</a>"
@@ -47,6 +54,10 @@ function loadTrainningList(pageState) {
                             + "<a class='btn btn-primary btn-sm' href='javascript:void(0);' onclick=DeletedDetailTrainningplanMode('"
                             + result.data[i].trainningId
                             + "')>Deleted</a>"
+                            + "&nbsp&nbsp&nbsp"
+                            + "<a class='btn btn-primary btn-sm' href='javascript:void(0);' onclick=AssginTrainningplanMode('"
+                            + result.data[i].trainningId
+                            + "')>Assgin</a>"
                             + "</td>");
                     // var td6 = $("<td><a class='btn btn-info'
                     // href='javascript:void(0);'> <i class='glyphicon
@@ -57,7 +68,7 @@ function loadTrainningList(pageState) {
                     td2.appendTo(tr);
                     td3.appendTo(tr);
                     td4.appendTo(tr);
-                    td5.appendTo(tr);
+                   // td5.appendTo(tr);
                     td6.appendTo(tr);
                     td7.appendTo(tr);
                     td8.appendTo(tr);
@@ -106,7 +117,7 @@ function dateType() {
         startView : 2,
         forceParse : 0,
         language : 'zh-CN',
-        format : 'yyyy-mm-dd hh:ii:ss',
+        format : 'yyyy-mm-dd',
         pickerPosition : 'bottom-left',
         showMeridian : 1
     });
@@ -364,7 +375,6 @@ function detailTrainningplan(CourceId) {
     var trainCourceId = CourceId;
     $("#parentTrainingName").val("");
     $("#parentTrainingName").val(trainCourceId);
-
     $.ajax({
             url : path + "/service/TrainingPlan/queryTrainPlan",
             dataType : "json",
@@ -398,8 +408,14 @@ function detailTrainningplan(CourceId) {
                         + "<a class='btn btn-danger btn-xs' href='javascript:void(0);' onclick=DetailTrainningDetailplanMode('"
                         + result[i].allocationPlanId
                         + "','"
-                        + result[i].TrainCourseId
+                        + trainCourceId
                         + "')>Deleted</a>"
+                        + "&nbsp&nbsp&nbsp"
+                        + "<a class='btn btn-danger btn-xs' href='javascript:void(0);' onclick=AssignTrainingPlanMode('"
+                        + result[i].allocationPlanId
+                        + "','"
+                        + trainCourceId+"','"+  result[i].parentId
+                        + "')>Assgin</a>"
                         + "</td>");
                     td1.appendTo(tr);
                     td2.appendTo(tr);
@@ -669,9 +685,10 @@ function queryTrainById(id) {
         cache : false,
         type : "post",
         success : function(result) {
+        	var datee=result.time.split(" ");
             $("#updatetrainningid2").val(result.trainningId);
             $("#updatetrainningName2").val(result.courseName);
-            $("#updatetrainningTime").val(result.time);
+            $("#updatetrainningTime").val(datee[0]);
             $("#udatelocation").val(result.location);
             $("#updateteacher").val(result.teacher);
             $("#updatetrainningURL").val(result.url);

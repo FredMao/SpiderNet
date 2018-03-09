@@ -13,6 +13,7 @@
 		<result property="skill" column="SKILL" javaType="String" />
 	</resultMap>
 
+
 	<select id="queryEmpInfo" parameterType="com.spidernet.dashboard.entity.EmpPageCondition"
 		resultMap="employeeInfoMap">
 		select e.ER_NUMBER,e.HR_NUMBER,e.`NAME`,e.ENAME ,b.`NAME` as
@@ -43,6 +44,47 @@
 		</if>
 		<if test="trainingId != null and trainingId != ''">
 			AND pt.TRAINING_ID = #{trainingId}
+		</if>
+		<if test="er != null and er != ''">
+			AND e.ER_NUMBER = #{er}
+		</if>
+
+		LIMIT #{currentPage},10;
+	</select>
+	
+	<select id="queryEmpPlanInfo" parameterType="com.spidernet.dashboard.entity.EmpPageCondition"
+		resultMap="employeeInfoMap">
+		select e.ER_NUMBER,e.HR_NUMBER,e.`NAME`,e.ENAME ,b.`NAME` as
+		NAME1,p.`NAME` as NAME2, e.SKILL
+		from t_employee AS e
+		LEFT JOIN t_bu AS b
+		ON e.BU_ID = b.BU_ID
+		LEFT JOIN t_project AS p
+		ON e.PROJECT_ID = p.PROJECT_ID
+		<if test="examId != null and examId != ''">
+			LEFT JOIN t_personal_exam AS pe
+			ON pe.EMPLOYEE_ID = e.EMPLOYEE_ID
+		</if>
+		<if test="(trainingId != null and trainingId != '') or (planId != null and planId != '')">
+			LEFT JOIN t_plan_personal_training AS pt
+			ON pt.EMPLOYEE_ID = e.EMPLOYEE_ID
+		</if>
+		WHERE 1 = 1 
+
+		<if test="buId != null and buId != ''">
+			AND b.BU_ID = #{buId}
+		</if>
+		<if test="projectId != null and projectId != ''">
+			AND p.PROJECT_ID = #{projectId}
+		</if>
+		<if test="examId != null and examId != ''">
+			AND pe.EXAM_ID = #{examId}
+		</if>
+		<if test="trainingId != null and trainingId != ''">
+			AND pt.TRAINING_ID = #{trainingId}
+		</if>
+		<if test="planId != null and planId != ''">
+			AND pt.PLAN_ID = #{planId}
 		</if>
 		<if test="er != null and er != ''">
 			AND e.ER_NUMBER = #{er}
@@ -95,6 +137,46 @@
 		</if>
 		<if test="trainingId != null and trainingId != ''">
 			AND pt.TRAINING_ID = #{trainingId}
+		</if>
+		<if test="er != null and er != ''">
+			AND e.ER_NUMBER = #{er}
+		</if>
+
+	</select>
+	
+	<select id="countPlanPage" parameterType="com.spidernet.dashboard.entity.EmpPageCondition"
+		resultType="int">
+		select count(0)
+		from t_employee AS e
+		LEFT JOIN t_bu AS b
+		ON e.BU_ID = b.BU_ID
+		LEFT JOIN t_project AS p
+		ON e.PROJECT_ID = p.PROJECT_ID
+		<if test="examId != null and examId != ''">
+			LEFT JOIN t_personal_exam AS pe
+			ON pe.EMPLOYEE_ID = e.EMPLOYEE_ID
+		</if>
+		<if test="(trainingId != null and trainingId != '') or (planId != null and planId != '')">
+			LEFT JOIN t_plan_personal_training AS pt
+			ON pt.EMPLOYEE_ID = e.EMPLOYEE_ID
+		</if>
+		WHERE 1 = 1
+
+		<if test="buId != null and buId != ''">
+			AND b.BU_ID = #{buId}
+		</if>
+		<if test="projectId != null and projectId != ''">
+			AND p.PROJECT_ID = #{projectId}
+		</if>
+		<if test="examId != null and examId != ''">
+			AND pe.EXAM_ID = #{examId}
+		</if>
+		<if test="trainingId != null and trainingId != ''">
+			AND pt.TRAINING_ID = #{trainingId}
+		</if>
+		
+		<if test="planId != null and planId != ''">
+			AND pt.PLAN_ID = #{planId}
 		</if>
 		<if test="er != null and er != ''">
 			AND e.ER_NUMBER = #{er}

@@ -87,6 +87,26 @@ public class EmployeeController {
     {
         return "employee/batchAddCapability";
     }
+    @RequestMapping("/assignTraining")
+    public String assignTraining(final HttpServletRequest request,
+            final HttpServletResponse response)
+    {
+        String trainingId = request.getParameter("trainingId");
+        request.setAttribute("trainingId", trainingId);
+        return "employee/assignTraining";
+    }
+    @RequestMapping("/assignPlanTraining")
+    public String assignPlanTraining(final HttpServletRequest request,
+            final HttpServletResponse response)
+    {
+        String trainingId = request.getParameter("trainingId");
+        String planTrainingId = request.getParameter("planTrainingId");
+        String pointId = request.getParameter("pointId");
+        request.setAttribute("trainingId", trainingId);
+        request.setAttribute("planTrainingId", planTrainingId);
+        request.setAttribute("pointId", pointId);
+        return "employee/assignPlanTraining";
+    }
     
     @RequestMapping("/batchAddTraining")
     public String batchAddTraining(final HttpServletRequest request,

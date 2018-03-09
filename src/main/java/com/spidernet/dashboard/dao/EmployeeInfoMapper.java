@@ -14,7 +14,11 @@ public interface EmployeeInfoMapper
     
     List<EmployeeInfo> queryEmpInfo(PageCondition pageCondition);
     
+    List<EmployeeInfo> queryEmpPlanInfo(PageCondition pageCondition);
+    
     int countPage(PageCondition pageCondition);
+    
+    int countPlanPage(PageCondition pageCondition);
 
     List<EmployeeInfo> queryEmpList(String trainingId);
     

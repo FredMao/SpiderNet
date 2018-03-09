@@ -3,6 +3,7 @@ package com.spidernet.dashboard.dao;
 import java.util.List;
 
 import com.spidernet.dashboard.entity.PersonalTrainning;
+import com.spidernet.dashboard.entity.PlanPersonalTrainning;
 
 public interface PersonalTrainningMapper
 {

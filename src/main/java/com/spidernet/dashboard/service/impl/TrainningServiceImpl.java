@@ -125,6 +125,12 @@ public class TrainningServiceImpl implements TrainningService {
 
 		return trainingList;
 	}
+	@Override
+    public List<Trainning> queryTrainingPlanName(String knowlegePoint) {
+        List<Trainning> trainingList = trainningMapper.queryTrainingPlanName(knowlegePoint);
+
+        return trainingList;
+    }
 
 	@Override
 	public Trainning queryTrainingById(String trainingId) {

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spidernet.dashboard.dao.PlanPersonalTrainningMapper">
+	<resultMap id="planPersonalTrainningMap"
+		type="com.spidernet.dashboard.entity.PlanPersonalTrainning">
+		<id property="trainningId" column="TRAINNING_ID" javaType="String" />
+		<id property="employeeId" column="EMPLOYEE_ID" javaType="String" />
+		<id property="planId" column="PLAN_ID" javaType="String" />
+		<result property="status" column="STATUS" javaType="String" />
+	</resultMap>
+
+	<insert id="addPlanPersonalTrainning" parameterType="java.util.List">
+		insert into t_plan_personal_training
+		values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.trainningId,jdbcType=VARCHAR},#{item.employeeId,jdbcType=VARCHAR},#{item.status,jdbcType=VARCHAR},#{item.planId,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	<select id="checkPlanPersonalTrainningExists" parameterType="com.spidernet.dashboard.entity.PlanPersonalTrainning" resultType="int">
+	    select count(0) from t_plan_personal_training where TRAINING_ID = #{trainningId} and EMPLOYEE_ID = #{employeeId} and PLAN_ID = #{planId}
+	</select>
+	
+	<update id="updateEmpTrainingPlanInfo" parameterType="String">
+	   update t_plan_personal_training set status="1" where employee_id in (select employee_id from t_employee where er_number = #{arg0}) and 
+		training_id in (select training_id from t_training  where course_name = #{arg1})
+	</update>
+	
+	<delete id="deleteEmpTrainingPlanInfo" parameterType="String">
+		
+		delete from t_plan_personal_training  where employee_id in (select employee_id from t_employee where er_number = #{arg0}) and 
+		training_id in (select training_id from t_training  where course_name = #{arg1})
+		
+		
+	</delete>
+	
+</mapper>

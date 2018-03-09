@@ -9,8 +9,8 @@
 		<result property="leaf" column="LEAF" javaType="Int" />
 		<result property="icon" column="ICON" javaType="String" />
 		<result property="createUser" column="CREATE_USER" javaType="String" />
-		<result property="createDate" column="CREATE_DATE" javaType="java.sql.Date" />
-		<result property="updateDate" column="UPDATE_DATE" javaType="java.sql.Date" />
+		<result property="createDate" column="CREATE_DATE" javaType="java.sql.Timestamp" />
+		<result property="updateDate" column="UPDATE_DATE" javaType="java.sql.Timestamp" />
 		<result property="description" column="DESCRIPTION" javaType="String" />
 		<result property="status" column="STATUS" javaType="Int" />
 		<result property="name" column="NAME" javaType="String" />

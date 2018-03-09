@@ -178,15 +178,15 @@
 	    <!--/span-->
 	</div><!--/row-->
     <!-- content ends -->
-    <c:import url="/service/manage/footer" />
+    
 </div>
 				</div>
 				<!--/row-->
+				<c:import url="/service/manage/footer" />
 			</div>
 			<!--/#content.col-md-0-->
 		
 		<!--/fluid-row-->
-		<hr>
 
 		
 

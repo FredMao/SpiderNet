@@ -14,6 +14,7 @@ public interface TrainningService
     int countTrainingPage(TrainningPageCondition trainningPageCondition);
     List<Trainning> queryTrainingByName(String trainingName);
     List<Trainning> queryTrainingName();
+    List<Trainning> queryTrainingPlanName(String knowledgePoint);
     Trainning queryTrainingById(String trainingId);
     List<String> queryEmpAllTrainingNames(EmpPageCondition empPageCondition);
     boolean updateTraining(Trainning trainning);

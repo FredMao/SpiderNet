@@ -11,6 +11,8 @@ public class EmpPageCondition extends PageCondition
     private String examId;
     
     private String trainingId;
+    
+    private String planId;
 
     public String getEr()
     {
@@ -60,6 +62,16 @@ public class EmpPageCondition extends PageCondition
     public void setTrainingId(String trainingId)
     {
         this.trainingId = trainingId;
+    }
+
+    public String getPlanId()
+    {
+        return planId;
+    }
+
+    public void setPlanId(String planId)
+    {
+        this.planId = planId;
     }
     
     

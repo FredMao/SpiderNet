@@ -16,6 +16,7 @@ public interface TrainningMapper
     int countTrainingPage(TrainningPageCondition trainningPageCondition);
     List<Trainning> queryTrainingByName(String trainingName);
     List<Trainning> queryTrainingName();
+    List<Trainning> queryTrainingPlanName(String pointId);
     Trainning queryTrainingById(String trainingId);
     List<String> queryPersonTrainingNames(EmpPageCondition empPageCondition);
     int updateTraining(Trainning trainning);

@@ -118,13 +118,13 @@
                                         <thead>
                                         <tr>
                                             <!-- <th>编号</th> -->
-                                            <th>Name</th>
-                                            <th>DateTime</th>
-                                            <th>Address</th>
-                                            <th>Trainer</th>
+                                            <th width="20%">Trainning Name</th>
+                                            <th width="10%">Target Date</th>
+                                          	<th width="10%">Remark</th>
+                                            <!-- <th>Trainer</th> -->
                                             <th width="20%">knowledgePoint</th>
                                             <th width="20%">SubTopic</th>
-                                            <th>Action</th>
+                                            <th width="20%">Action</th>
                                         </tr>
                                         </thead>
                                     </table>
@@ -176,10 +176,10 @@
                                     <tr>
                                         <th>knowledge point</th>
                                         <th>Child Knowledge</th>
-                                        <th>StartDate</th>
-                                        <th>EndDate</th>
+                                        <th>Start Time</th>
+                                        <th>End Time</th>
                                         <th>Location</th>
-                                        <th>participants</th>
+                                        <th>Trainner</th>
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
@@ -247,7 +247,7 @@
                             </div>
                         </div>
                         <div class="group">
-                            <label class="col-sm-2 control-label">Tranning Time</label>
+                            <label class="col-sm-2 control-label">Target Date</label>
                             <div class="col-md-4">
                                 <div class="input-group date form_datetime col-sm-12"
                                      data-link-field="dt_set_order_time_input">
@@ -265,33 +265,35 @@
                     </br></br>
                     <div class="form-group">
                         <div class="group">
-                            <label class="col-sm-2 control-label">Address</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="updatelocation" id="udatelocation"/>
+                            <label class="col-sm-2 control-label">Remark</label>
+                            <div class="col-sm-10">
+                                <input type="textarea" class="form-control" name="updatelocation" id="udatelocation"/>
+                                 <input type="hidden" class="form-control" name="updatetrainningURL" id="updatetrainningURL"/>
+                                  <input type="hidden" class="form-control" name="updateteacher" id="updateteacher"/>
                             </div>
                         </div>
-                        <div class="group">
+                       <!--  <div class="group">
                             <label class="col-sm-2 control-label">Trainer</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="updateteacher" id="updateteacher"/>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
-                    </br></br>
+                   <!-- </br></br>
                     <div class="form-group">
                         <div class="group">
                             <label class="col-sm-2 control-label">URL</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" name="updatetrainningURL" id="updatetrainningURL"/>
+                                <input type="textaera " class="form-control" name="updatetrainningURL" id="updatetrainningURL"/>
                             </div>
                         </div>
-                    </div>
+                    </div> --> 
                     </br></br>
 
                     <div>
                         <label class="col-lg-2 control-label">Knowledge</label>
                         <div class="col-sm-10">
-                            <div id="update-treeview-Knowledge" class=""></div>
+                            <div id="update-treeview-Knowledge"  style="height: 300px;overflow-y :scroll;"></div>
                             <input type="hidden" name="updateKnowledgePointList" id="updateKnowledgePointList"/>
                         </div>
                     </div>
@@ -326,6 +328,8 @@
                         <i class="glyphicon glyphicon-remove"></i>
                     </a>
                     </div>
+                    <input type="hidden" class="form-control" name="updatetrainningURL" id="updatetrainningURL"/>
+                                  <input type="hidden" class="form-control" name="updateteacher" id="updateteacher"/>
                 </div>
                 <br id="trainningBox" class="box-content">
                     </br>
@@ -340,7 +344,7 @@
                             </div>
                         </div>
                         <div class="group">
-                            <label class="col-sm-2 control-label">Tranning Time</label>
+                            <label class="col-sm-2 control-label">Target Date</label>
                             <div class="col-md-4">
                                 <div class="input-group date form_datetime col-sm-12"
                                      data-link-field="dt_set_order_time_input">
@@ -358,22 +362,22 @@
                     </br></br>
                     <div class="form-group">
                         <div class="group">
-                            <label class="col-sm-2 control-label">Address</label>
-                            <div class="col-sm-4">
+                            <label class="col-sm-2 control-label">Remark</label>
+                            <div class="col-sm-10">
                                 <input type="text" class="form-control" name="location" id="location"/>
                             </div>
                         </div>
-                        <div class="group">
+                        <!-- <div class="group">
                             <label class="col-sm-2 control-label">Trainer</label>
                             <div class="col-sm-4">
                                 <input type="text" class="form-control" name="teacher" id="teacher"/>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     </br></br>
+								
 
-
-                    <div class="form-group">
+                  <!--   <div class="form-group">
                         <div class="group">
                             <label class="col-sm-2 control-label">URL</label>
                             <div class="col-sm-10">
@@ -381,7 +385,7 @@
                             </div>
                         </div>
                     </div>
-                    </br></br>
+                    </br></br> -->
 
                     <div>
                         <label class="col-lg-2 control-label">Knowledge</label>
@@ -428,35 +432,27 @@
                     </br>
                     <div id="addsuccessAlert" class="alert alert-success" style="display: none;"></div>
                     <div id="addfailureAlert" class="alert alert-warning" style="display: none;"></div>
-
-                    <div>
-                        <label class="col-lg-2 control-label">Knowledge</label>
-                        <div class="col-lg-4">
-                            <select href="#" class="form-control " name="knowledgePoints"
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Knowledge</label>
+                         <select href="#" class="form-control " name="knowledgePoints"
                                     data-bv-notempty data-bv-notempty-message="Please select knowledge Points."
                                     id="addKnowledgePoint"
                                     data-bv-group=".group">
                                 <option value="">-- Please Select --</option>
                             </select>
-                        </div>
-                        <label class="col-lg-2 control-label">SubTopic</label>
-                        <div class="col-lg-4">
-                            <select href="#" class="form-control " name="childknowledgePoints"
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">SubTopic</label>
+                         <select href="#" class="form-control " name="childknowledgePoints"
                                     data-bv-notempty data-bv-notempty-message="Please select Child Knowledge Points."
                                     id="addChildKnowledgePoints"
                                     data-bv-group=".group">
                                 <option value="">-- Please Select --</option>
                             </select>
-                        </div>
                     </div>
-
-                    </br></br></br></br>
-
-                    <div class="form-group">
-                        <div class="group">
-                            <label class="col-sm-2 control-label">Start Time</label>
-                            <div class="col-md-4">
-                                <div class="input-group date form_datetime col-sm-12"
+					<div class="form-group">
+                        <label for="exampleInputEmail1">Start Time</label>
+                        <div class="input-group date form_datetime col-sm-12"
                                      data-link-field="dt_set_order_time_input">
                                     <input class="form-control" id="addDetailtrainningTimeStart" name="startTime"
                                            type="text"
@@ -466,12 +462,10 @@
                                                                                              id="addDetailtrainningTime1"
                                                                                              name="trainningTime1"/>
                                 </div>
-                            </div>
-                        </div>
-						<div class="group">
-                            <label class="col-sm-2 control-label">End Time</label>
-                            <div class="col-md-4">
-                                <div class="input-group date form_datetime col-sm-12"
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">End Time</label>
+                        <div class="input-group date form_datetime col-sm-12"
                                      data-link-field="dt_set_order_time_input">
                                     <input class="form-control" id="addDetailtrainningTimeEnd" name="endTime"
                                            type="text"
@@ -481,30 +475,18 @@
                                                                                              id="addDetailtrainningTime2"
                                                                                              name="trainningTime2"/>
                                 </div>
-                            </div>
-                        </div>
                     </div>
-
-                    </br></br></br></br>
-
+					<div class="form-group">
+                        <label for="exampleInputEmail1">Trainner</label>
+                         <input type="text" class="form-control" name="addParticipants" id="addParticipants" />
+                    </div>
                     <div class="form-group">
-                        <div class="group">
-                            <label class="col-sm-2 control-label">Participants</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="addParticipants" id="addParticipants" />
-                            </div>
-                        </div>
-                        <div class="group">
-                            <label class="col-sm-2 control-label">Address</label>
-                            <div class="col-sm-4">
-                                <input type="text" class="form-control" name="location" id="addlocation"/>
-                                <input type="hidden" id="parentTrainingName" name="parentTrainingName"/>
-                            </div>
-                        </div>
+                        <label for="exampleInputEmail1">Address</label>
+                         <input type="text" class="form-control" name="location" id="location" />
+                         <input type="hidden" id="parentTrainingName" name="parentTrainingName"/>
                     </div>
 
-                    </br></br></br>
-                    <p> </p>
+                    
                     <div class="center">
                     	<button class="btn btn-success" href="#" onClick="saveTrainningdetailPlan()">
                     	<i class="glyphicon glyphicon-ok icon-white"></i>Confirm</button>

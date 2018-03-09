@@ -22,9 +22,9 @@
 	</select>
 	
 	<insert id="addTraining" parameterType="com.spidernet.dashboard.entity.Trainning">
-	    insert into t_training (TRAINING_ID,COURSE_NAME,TIME,LOCATION,TEACHER,URL,KNOWLEDGE_POINT,SUB_TOPIC,STATUS)
+	    insert into t_training (TRAINING_ID,COURSE_NAME,TIME,LOCATION,TEACHER,URL,KNOWLEDGE_POINT,SUB_TOPIC,STATUS,create_time)
 	    values
-	    (#{trainningId},#{courseName},#{time},#{location},#{teacher},#{url},#{knowledgePoint},#{SubTopic},#{status})
+	    (#{trainningId},#{courseName},#{time},#{location},#{teacher},#{url},#{knowledgePoint},#{SubTopic},#{status},#{createTime})
 	</insert>
 	
 	<select id="queryTrainingInfo" parameterType="com.spidernet.dashboard.entity.TrainningPageCondition"
@@ -33,7 +33,7 @@
 	    <if test="trainningName != null and trainningName != ''">
 				AND COURSE_NAME like CONCAT('%',#{trainningName},'%')
 		</if>
-		ORDER BY TIME ASC
+		ORDER BY create_time desc
 		LIMIT #{currentPage},10;
 	</select>
 	
@@ -53,6 +53,10 @@
 	
 	<select id="queryTrainingName" resultMap="trainningMap">
 	    SELECT DISTINCT COURSE_NAME as courseName FROM t_training ORDER BY COURSE_NAME ASC
+	</select>
+	
+	<select id="queryTrainingPlanName" resultMap="trainningMap" parameterType="String">
+	    SELECT * FROM t_training where    KNOWLEDGE_POINT  like concat('%',#{pointId},'%')
 	</select>
 	
 	<select id="queryTrainingById" parameterType="String" resultType="com.spidernet.dashboard.entity.Trainning">

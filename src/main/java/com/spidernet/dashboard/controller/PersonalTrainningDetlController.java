@@ -21,6 +21,7 @@ import com.spidernet.dashboard.entity.CapabilityMap;
 import com.spidernet.dashboard.entity.Employee;
 import com.spidernet.dashboard.entity.PersonalMap;
 import com.spidernet.dashboard.entity.PersonalTrainning;
+import com.spidernet.dashboard.entity.PlanPersonalTrainning;
 import com.spidernet.dashboard.entity.ProCapability;
 import com.spidernet.dashboard.service.CCapabilityService;
 import com.spidernet.dashboard.service.CapabilityTrainingService;
@@ -214,6 +215,51 @@ public class PersonalTrainningDetlController
         }
         else {
         	addResultFlag =false;	
+        } 
+        
+        return addResultFlag;
+    }
+    @RequestMapping("/batchAddPlanTraining")
+    @ResponseBody
+    public Boolean batchAddPlanTraining(final HttpServletRequest request,
+            final HttpServletResponse response,final String[] empArray)
+    {
+        List<PlanPersonalTrainning> planPersonalTrainningList = new ArrayList<PlanPersonalTrainning>();
+
+        PlanPersonalTrainning planPersonalTrainning = null;
+        
+        String employeeId = "";
+        
+        String trainingId = request.getParameter("trainingId");
+        String planId = request.getParameter("planId");
+        
+        boolean addResultFlag;
+        
+        if(empArray!=null) {
+        
+          for(int i = 0; i < empArray.length; i++){
+            
+            employeeId = employeeService.fetchByErNumber(empArray[i]).getEmployeeId();
+            
+            planPersonalTrainning = new PlanPersonalTrainning();
+
+            planPersonalTrainning.setEmployeeId(employeeId);
+            planPersonalTrainning.setTrainningId(trainingId);
+            planPersonalTrainning.setStatus(Constants.TRAINNING_STATUS_REGISTED);
+            planPersonalTrainning.setPlanId(planId);
+            
+            if (personalTrainningService.checkPlanPersonalTrainningExists(planPersonalTrainning))
+            {
+                continue;
+            }
+            
+            planPersonalTrainningList.add(planPersonalTrainning);
+        }
+        
+         addResultFlag = personalTrainningService.addPlanPersonalTrainning(planPersonalTrainningList);
+        }
+        else {
+            addResultFlag =false;   
         } 
         
         return addResultFlag;

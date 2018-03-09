@@ -1,6 +1,7 @@
 package com.spidernet.dashboard.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Date;;
 
 
@@ -16,8 +17,8 @@ public class KnowledgePoint  implements Serializable {
 	private int leaf;
 	private String icon;
 	private String createUser;
-	private Date createDate;
-	private Date updateDate;
+	private Timestamp createDate;
+	private Timestamp updateDate;
 	private String description;
 	private int status;
 	private String name;
@@ -103,22 +104,6 @@ public class KnowledgePoint  implements Serializable {
 		this.createUser = createUser;
 	}
 
-	public Date getCreateDate() {
-		return createDate;
-	}
-
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
-
-	public Date getUpdateDate() {
-		return updateDate;
-	}
-
-	public void setUpdateDate(Date updateDate) {
-		this.updateDate = updateDate;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -137,8 +122,9 @@ public class KnowledgePoint  implements Serializable {
 		this.leaf = leaf;
 		this.icon = icon;
 		this.createUser = createUser;
-		this.createDate = createDate;
-		this.updateDate = updateDate;
+		
+		this.createDate = new Timestamp(createDate.getTime());
+		this.updateDate = new Timestamp(updateDate.getTime());
 		this.description = description;
 	}
 
@@ -148,4 +134,24 @@ public class KnowledgePoint  implements Serializable {
 				+ ", leaf=" + leaf + ", icon=" + icon + ", createUser=" + createUser + ", createDate=" + createDate
 				+ ", updateDate=" + updateDate + ", description=" + description + "]";
 	}
+
+    public Timestamp getCreateDate()
+    {
+        return createDate;
+    }
+
+    public Timestamp getUpdateDate()
+    {
+        return updateDate;
+    }
+
+    public void setCreateDate(Timestamp createDate)
+    {
+        this.createDate = createDate;
+    }
+
+    public void setUpdateDate(Timestamp updateDate)
+    {
+        this.updateDate = updateDate;
+    }
 }

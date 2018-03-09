@@ -21,7 +21,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="index.html"> <img alt="Charisma Logo" src="<%=path %>/img/title_logo.png" class="hidden-xs"/>
-                <span style="float: right;margin-top:-12%;">E-learning</span></a>
+                <span style="float: right;">E-learning</span></a>
             <!-- user dropdown starts -->
             <div class="btn-group pull-right">
                 <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">

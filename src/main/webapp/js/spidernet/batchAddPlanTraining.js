@@ -1,12 +1,8 @@
 var empArray = new Array();
-
+var pointId;
 $(function(){
+	pointId = $('#pointId').val();
 	loadEmpList();
-	
-	loadBu();
-	
-	loadProject();
-	
 	loadTrainingName();
 	
 });
@@ -28,60 +24,30 @@ function checkPrivilege(){
 
 
 function loadTrainingName(){
-	var trainingId = $('#trainingId').val();
 	$.ajax({
-		url:path+'/service/trainning/queryTrainingId',
+		url:path+'/service/trainning/queryTrainingPlanName',
 		dataType:"json",
+		data: {'pointId':pointId},
 		async:true,
-		data:{"traningId":trainingId},
 		cache:false,
 		type:"post",
-		success:function(result){
-			$("#TrainingName").append("<option>-- please select training --</option>");
-			$("#TrainingName").append("<option>"+result.courseName+"</option>");
-			
+		success:function(trainingList){
+			$("#TrainingName").append("<option>-- please select training Name --</option>");
+			for(var i = 0;i<trainingList.length;i++){
+				$("#TrainingName").append("<option>"+trainingList[i].courseName+"</option>");
+			}
 			$('#TrainingName').selectpicker({
+		        'selectedText': 'cat'
+		    });
+			var planId = $('#planId').val();
+			$("#trainingPlan").append("<option value='0'>-- please select training plan --</option>");
+			$("#trainingPlan").append("<option value="+planId+">current training plan</option>");
+			$('#trainingPlan').selectpicker({
 		        'selectedText': 'cat'
 		    });
 		}
 	})
 }
-/*$("#TrainingName").change(function(){
-	var trainingName = $('#TrainingName').val();
-	$.ajax({
-		url:path+'/service/trainning/queryTrainingByName',
-		dataType:"json",
-		async:true,
-		data:{"trainingName":trainingName},
-		cache:false,
-		type:"post",
-		success:function(trainingList){
-			$("#TrainingDate").find("option").remove(); 
-			$("#TrainingDate").append("<option value=''>-- please select training date --</option>");
-			for(var i = 0;i<trainingList.length;i++){
-				$("#TrainingDate").append("<option >"+trainingList[i].time+"</option>");
-			}
-		}
-	})
-})*/
-
-
-//function addEmployee(){
-//	var er = "";
-//	for(var i=0; i<10; i++){
-//		er = $("#td"+i+"").text();
-//		
-//		if($("#checkbox"+i+"").is(':checked') && $.inArray(er, empArray) == -1){
-//			empArray.push(er);
-//		}
-//		
-//		if(!$("#checkbox"+i+"").is(':checked') && $.inArray(er, empArray) != -1){
-//			empArray.splice(jQuery.inArray(er,empArray),1); 
-//		}
-//	}
-//}
-
-
 function addEmployee(){
 	var option =document.all("checkbox");
 	if (option!=null){
@@ -147,10 +113,10 @@ function batchAddTraining(){
 	addEmployee();
 	
 	var trainingName = $('#TrainingName').val();
-	
+	var planId = $('#planId').val();
 	$.ajax({
-		url:path+'/service/trainning/batchAddTraining',
-		data: {'empArray':empArray,'trainingName':trainingName},
+		url:path+'/service/trainning/batchAddPlanTraining',
+		data: {'empArray':empArray,'trainingId':trainingId,'planId':planId},
 		async:true,
 		cache:false,
 		traditional: true,
@@ -174,14 +140,22 @@ function loadEmpList(pageState){
 	var projectId = $("#project").val();
 	
 	var trainingName = $("#TrainingName").val();
-
+	
+	var trainingPlan = $("#trainingPlan").val();
+	var planId = $("#planId").val(); 
 	var pageState = pageState;
+	var url=path+"/service/employeeInfo/employeeInfoList";
+	var data = {"buId":buId,"projectId":projectId,"pageState":pageState,"trainingName":trainingName};
+	if(trainingPlan!="0"){
+		url = path+"/service/employeeInfo/employeeInfoPlanList";
+		data = {"buId":buId,"projectId":projectId,"pageState":pageState,"trainingName":trainingName,"planId":planId};
+	}
 	
 	$.ajax({
-		url:path+"/service/employeeInfo/employeeInfoList",
+		url:url,
 		dataType:"json",
 		async:true,
-		data:{"buId":buId,"projectId":projectId,"pageState":pageState,"trainingName":trainingName},
+		data:data,
 		cache:false,
 		type:"post",
 		success:function(result){

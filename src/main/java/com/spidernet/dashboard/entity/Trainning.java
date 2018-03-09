@@ -1,5 +1,7 @@
 package com.spidernet.dashboard.entity;
 
+import java.sql.Timestamp;
+
 public class Trainning
 {
     private String trainningId;
@@ -11,6 +13,7 @@ public class Trainning
     private String status;
     private String knowledgePoint;
     private String SubTopic;
+    private Timestamp createTime;
 
 
     public String getTrainningId()
@@ -84,5 +87,13 @@ public class Trainning
 
     public void setSubTopic(String subTopic) {
         SubTopic = subTopic;
+    }
+    public Timestamp getCreateTime()
+    {
+        return createTime;
+    }
+    public void setCreateTime(Timestamp createTime)
+    {
+        this.createTime = createTime;
     }
 }

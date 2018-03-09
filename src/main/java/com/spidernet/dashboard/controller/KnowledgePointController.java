@@ -1,5 +1,6 @@
 package com.spidernet.dashboard.controller;
 
+import java.sql.Timestamp;
 import java.util.*;
 
 import javax.annotation.Resource;
@@ -150,8 +151,8 @@ public class KnowledgePointController {
 	        if (null != status && !"".equals(status)){
 	        	  knowledgePoint.setStatus(Integer.parseInt(status));
 	        }
-	        knowledgePoint.setCreateDate(new Date());
-	        knowledgePoint.setUpdateDate(new Date());
+	        knowledgePoint.setCreateDate(new Timestamp(new Date().getTime()));
+	        knowledgePoint.setUpdateDate(new Timestamp(new Date().getTime()));
 	        
 	        if (operator == 1){
 	        	result = knowledgePointService.updateKnowledgePoint(knowledgePoint)==1?true:false;
